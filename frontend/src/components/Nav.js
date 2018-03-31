@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import logoImg from "../assets/logo.png"
 
 export default class Nav extends React.Component {
-  
+
   render() {
     return (
       <nav className="navbar">
@@ -19,7 +19,7 @@ export default class Nav extends React.Component {
             <Link to='/projGroups' className="nav-link">Project Groups</Link>
           </li>
           <li className="nav-item">
-          <Link to='myProfile' className="nav-link">My Profile</Link>
+          <Link to='/' className="nav-link">My Profile</Link>
           </li>
           </ul>
 
