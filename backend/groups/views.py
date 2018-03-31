@@ -54,8 +54,6 @@ class GroupViewSet(viewsets.ModelViewSet):
 #         course = self.kwargs['course']
 #         return Purchase.objects.filter(group__course=course)
 
-
-
 class RatingViewSet(viewsets.ModelViewSet):
     queryset = models.Rating.objects.all()
     serializer_class = RatingSerializer

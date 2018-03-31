@@ -46,7 +46,7 @@ class Membership(models.Model):
 
 class Rating(models.Model):
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
-
+    
     # STAR_CONVERSION = (
     #     (1, 'One'),
     #     (2, 'Two'),
