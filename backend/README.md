@@ -2,12 +2,14 @@ Endpoints available
 
 /api/users/
 
+```json
 {
     "username": "dakdo",
     "password": "dakdo",
     "first_name": "dakdo",
     "last_name": "dakdo"
 }
+```
 
 This generates a JWT token or refreshes it. Use in the format:
 
@@ -24,6 +26,7 @@ api/auth/token/obtain/  OR   api/auth/token/refresh/
 
 /api/groups/
 
+```json
 {
     "name": "x",
     "description": "x",
@@ -31,13 +34,18 @@ api/auth/token/obtain/  OR   api/auth/token/refresh/
     "members": [{"user":1, "role":"dev"},{"user":2, "role":"dev"}],
     "owner": "3"
 }
+```
+
+For ratings (currently has no ownership):
 
 /api/ratings/
 
+```json
 {
     "user":1
     "rating":3
 }
+```
 
 Filters groups with course with CMPT470
 /api/groups/?course="CMPT470"
