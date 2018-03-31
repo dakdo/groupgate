@@ -9,16 +9,18 @@ Endpoints available
     "last_name": "dakdo"
 }
 
-This generates a JWT token. Use in the format:
+This generates a JWT token or refreshes it. Use in the format:
 
 JWT <token>
 
-/api/users/login
+api/auth/token/obtain/  OR   api/auth/token/refresh/
 
+```json
 {
     "username": "dakdo",
     "password": "dakdo"
 }
+```
 
 /api/groups/
 
