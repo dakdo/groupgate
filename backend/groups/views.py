@@ -5,7 +5,7 @@ from django.contrib.auth import get_user_model
 from rest_framework.decorators import detail_route
 from rest_framework.response import Response
 from groups import permissions
-from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
+from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly, AllowAny
 
 
 UserModel = get_user_model()
@@ -13,6 +13,7 @@ UserModel = get_user_model()
 class UserViewSet(viewsets.ModelViewSet):
     queryset = UserModel.objects.all()
     serializer_class = UserSerializer
+    permission_classes = (AllowAny,)
 
 
 class GroupViewSet(viewsets.ModelViewSet):

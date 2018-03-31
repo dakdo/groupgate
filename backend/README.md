@@ -4,10 +4,12 @@ Endpoints available
 
 ```json
 {
-    "username": "dakdo",
-    "password": "dakdo",
-    "first_name": "dakdo",
-    "last_name": "dakdo"
+    "username": "",
+    "password": "",
+    "first_name": "",
+    "last_name": "",
+    "display_name": "",
+    "groups": []
 }
 ```
 
@@ -30,7 +32,7 @@ api/auth/token/obtain/  OR   api/auth/token/refresh/
 {
     "name": "x",
     "description": "x",
-    "course":"CMPT470"
+    "course":"CMPT470",
     "members": [{"user":1, "role":"dev"},{"user":2, "role":"dev"}],
     "owner": "3"
 }
