@@ -5,16 +5,21 @@ import Validator from "validator";
 import InlineError from "../messages/InlineError";
 
 export default class SignUpForm extends React.Component {
-  state = {
-    data: {
-      email: "",
-      displayName: "",
-      password: "",
-      retypePassword: "",
-    },
+  constructor(props) {
+    super(props);
+    this.state = {
+      data: {
+        email: "",
+        displayName: "",
+        password: "",
+        retypePassword: "",
+      },
     loading: false,
     errors: {}
   };
+  this.onChange = this.onChange.bind(this);
+  this.onSubmit = this.onSubmit.bind(this);
+  }
 
   onChange = e =>
     this.setState({
@@ -26,11 +31,17 @@ export default class SignUpForm extends React.Component {
     this.setState({ errors });
     if (Object.keys(errors).length === 0) {
       this.setState({ loading: true });
-      this.props
-        .submit(this.state.data)          // <------------------------
-        .catch(err =>
-          this.setState({ errors: err.response.data.errors, loading: false })
-        );
+      var data = {
+        "username": this.state.data.email,
+        "password": this.state.data.password,
+        "first_name": "foo",
+        "last_name": "bar",
+        "display_name": this.state.data.displayName,
+        "groups": []
+
+      }
+      this.props.onSubmit(data)          // <------------------------
+        
     }
   };
 
@@ -121,5 +132,5 @@ export default class SignUpForm extends React.Component {
   }
 
   SignUpForm.propTypes = {
-    submit: PropTypes.func.isRequired
+    onSubmit: PropTypes.func.isRequired
   };

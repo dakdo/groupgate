@@ -33,7 +33,7 @@ render(){
         <h5 className="text-center notBold">Create Group. Find People. Finish Project. Provide Feedback.</h5><br/><br/>
         {/* Login Form */}
         <div className="d-flex justify-content-center">
-          <LoginForm />
+          <LoginForm onSubmit={this.props.onSubmit}/>
         </div>
         <p className="text-center">Don't have an account? <Link to="/signup">Create account</Link></p>
       </div>
