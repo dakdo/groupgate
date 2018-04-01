@@ -1,6 +1,6 @@
 from rest_framework import viewsets, generics, status
 from groups import models
-from .serializers import UserSerializer, GroupCreateSerializer, RatingSerializer, WeddingInviteResponseSerializer, WeddingInviteSerializer
+from .serializers import UserSerializer, GroupCreateSerializer, RatingSerializer, InviteResponseSerializer, InviteSerializer
 from django.contrib.auth import get_user_model
 from rest_framework.decorators import detail_route
 from rest_framework.response import Response
@@ -59,18 +59,29 @@ class RatingViewSet(viewsets.ModelViewSet):
     queryset = models.Rating.objects.all()
     serializer_class = RatingSerializer
 
-class WeddingInviteView(viewsets.ModelViewSet):
-    queryset = models.WeddingInvite.objects.all()
-    serializer_class = WeddingInviteSerializer
+class InviteView(viewsets.ModelViewSet):
+    queryset = models.Invite.objects.all()
+    serializer_class = InviteSerializer
 
-class WeddingInviteResponseView(APIView):
-    serializer_class = WeddingInviteResponseSerializer
+class InviteResponseView(APIView):
+    serializer_class = InviteResponseSerializer
 
-    # models.WeddingInvite.objects.get()
-    def get_object(self, pk):
+    def get_invite(self, pk):
         try:
-            return models.WeddingInvite.objects.get(pk=pk)
-        except models.WeddingInvite.DoesNotExist:
+            return models.Invite.objects.get(pk=pk)
+        except models.Invite.DoesNotExist:
+            raise Http404
+
+    def get_group(self, pk):
+        try:
+            return models.Group.objects.get(pk=pk)
+        except models.Group.DoesNotExist:
+            raise Http404
+
+    def get_user(self, pk):
+        try:
+            return models.CustomUser.objects.get(pk=pk)
+        except models.CustomUser.DoesNotExist:
             raise Http404
 
     def post(self, request, pk):
@@ -78,13 +89,18 @@ class WeddingInviteResponseView(APIView):
 
         if serializer.is_valid():
             response = serializer.data['response']
-            invite = self.get_object(pk)
+            invite = self.get_invite(pk)
+            group = self.get_group(invite.group.id)
+            user = self.get_user(invite.to_user.id)
 
             if response == True:
+                # group.add_member(user)
+                membership = models.Membership(user=user, group=group, role="member")
+                membership.save()
                 invite.accept()
-                return Response({'success': "Wedding Invited accepted"}, status=status.HTTP_200_OK)
+                return Response({'success': "Invite accepted"}, status=status.HTTP_200_OK)
             else:
                 invite.decline()
-                return Response({'success': "Wedding Invited declined"}, status=status.HTTP_200_OK)
+                return Response({'success': "Invite declined"}, status=status.HTTP_200_OK)
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

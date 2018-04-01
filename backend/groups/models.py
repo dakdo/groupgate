@@ -43,6 +43,7 @@ class Membership(models.Model):
     group = models.ForeignKey(Group, on_delete=models.CASCADE)
     role = models.CharField(max_length=100)
 
+    # def add_membership(user, group, role):
 
 class Rating(models.Model):
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
@@ -59,10 +60,10 @@ class Rating(models.Model):
 
     rating = models.IntegerField()
 
-class WeddingInvite(models.Model):
+class Invite(models.Model):
      from_user=models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name="person_inviting")
      to_user=models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name="person_invited")
-     group=models.ForeignKey(Group, on_delete=models.CASCADE, related_name="wedding_invite")
+     group=models.ForeignKey(Group, on_delete=models.CASCADE, related_name="group_invite")
      status=models.IntegerField(blank=True, null=True)
 
      def accept(self):
