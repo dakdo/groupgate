@@ -58,3 +58,24 @@ class Rating(models.Model):
     # rating = models.PositiveSmallIntegerField(choices=STAR_CONVERSION)
 
     rating = models.IntegerField()
+
+class WeddingInvite(models.Model):
+     from_user=models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name="person_inviting")
+     to_user=models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name="person_invited")
+     group=models.ForeignKey(Group, on_delete=models.CASCADE, related_name="wedding_invite")
+     status=models.IntegerField(blank=True, null=True)
+
+     def accept(self):
+
+        #  attending=Attending(attendant=to_user,wedding=Wedding)
+        #  attendant.save()
+
+         self.status=1
+         self.save()
+
+        #  notification.send([self.to_user],"invite_accepted",{"invitation":self})
+
+
+     def decline(self):
+         self.status=2
+         self.save()

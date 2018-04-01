@@ -91,3 +91,16 @@ class RatingSerializer(serializers.ModelSerializer):
         fields = ('id', 'user', 'rating')
         model = models.Rating
 
+class WeddingInviteSerializer(serializers.ModelSerializer):
+    # group = serializers.ReadOnlyField(source='group.id')
+    # from_user = serializers.ReadOnlyField(source='customuser.id')
+    # to_user = serializers.ReadOnlyField(source='customuser.id')
+
+    # from_user = UserSerializer(source='customuser.person_inviting')
+    # to_user = UserSerializer(source='customuser.person_invited')
+    class Meta:
+        fields = ('id', 'from_user', 'to_user', 'group', 'status')
+        model=models.WeddingInvite
+
+class WeddingInviteResponseSerializer(serializers.Serializer):
+    response = serializers.BooleanField(required=True)

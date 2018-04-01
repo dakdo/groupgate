@@ -1,13 +1,14 @@
-from rest_framework import viewsets, generics
+from rest_framework import viewsets, generics, status
 from groups import models
-from .serializers import UserSerializer, GroupCreateSerializer, RatingSerializer
+from .serializers import UserSerializer, GroupCreateSerializer, RatingSerializer, WeddingInviteResponseSerializer, WeddingInviteSerializer
 from django.contrib.auth import get_user_model
 from rest_framework.decorators import detail_route
 from rest_framework.response import Response
 from groups import permissions
 from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly, AllowAny
 
-
+from django.http import Http404
+from rest_framework.views import APIView
 UserModel = get_user_model()
 
 class UserViewSet(viewsets.ModelViewSet):
@@ -57,3 +58,33 @@ class GroupViewSet(viewsets.ModelViewSet):
 class RatingViewSet(viewsets.ModelViewSet):
     queryset = models.Rating.objects.all()
     serializer_class = RatingSerializer
+
+class WeddingInviteView(viewsets.ModelViewSet):
+    queryset = models.WeddingInvite.objects.all()
+    serializer_class = WeddingInviteSerializer
+
+class WeddingInviteResponseView(APIView):
+    serializer_class = WeddingInviteResponseSerializer
+
+    # models.WeddingInvite.objects.get()
+    def get_object(self, pk):
+        try:
+            return models.WeddingInvite.objects.get(pk=pk)
+        except models.WeddingInvite.DoesNotExist:
+            raise Http404
+
+    def post(self, request, pk):
+        serializer = self.serializer_class(data=request.data)
+
+        if serializer.is_valid():
+            response = serializer.data['response']
+            invite = self.get_object(pk)
+
+            if response == True:
+                invite.accept()
+                return Response({'success': "Wedding Invited accepted"}, status=status.HTTP_200_OK)
+            else:
+                invite.decline()
+                return Response({'success': "Wedding Invited declined"}, status=status.HTTP_200_OK)
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
