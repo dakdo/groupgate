@@ -9,12 +9,15 @@ import rootReducer from './reducers'
 export default (history) => {
   const persistedFilter = createFilter(
     'auth', ['access', 'refresh']);
+  const persistedFilter2 = createFilter(
+    'signup', ['requesting','signed_up']);
+
   const reducer = persistReducer(
     {
       key: 'polls',
       storage: storage,
-      whitelist: ['auth'],
-      transforms: [persistedFilter]
+      whitelist: ['auth','signup'],
+      transforms: [persistedFilter, persistedFilter2]
     },
     rootReducer)
   const store = createStore(

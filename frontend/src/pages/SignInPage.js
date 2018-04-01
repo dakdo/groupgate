@@ -35,7 +35,7 @@ render(){
         <div className="d-flex justify-content-center">
           <LoginForm onSubmit={this.props.onSubmit}/>
         </div>
-        <p className="text-center">Don't have an account? <Link to="/signup">Create account</Link></p>
+        <p className="text-center">Dont have an account? <Link to="/signup">Create account</Link></p>
       </div>
     </div>
   );
