@@ -14,7 +14,6 @@ const Login = (props) => {
   return (
      <div className="login-page">
        <SignInPage {...props} />
-       // <LoginForm {...props}/>
     </div>
   )
 }
