@@ -1,11 +1,16 @@
 import { combineReducers } from 'redux'
 import { routerReducer } from 'react-router-redux'
 import auth, * as fromAuth from './auth.js'
+import signup, * as fromSignup from './signup.js'
 
 export default combineReducers({
   auth: auth,
-  router: routerReducer
+  router: routerReducer,
+  signup: signup
 })
+
+export const getAccess =
+state => fromAuth.getAccess(state.auth)
 export const isAuthenticated =
  state => fromAuth.isAuthenticated(state.auth)
 export const accessToken = 
@@ -18,3 +23,5 @@ export const isRefreshTokenExpired =
   state => fromAuth.isRefreshTokenExpired(state.auth)
 export const authErrors =
   state => fromAuth.errors(state.auth)
+export const isSignedUp =
+  state => fromSignup.isSignedUp(state.signup)

@@ -5,7 +5,7 @@ import { Redirect } from 'react-router'
 import LoginForm from '../components/forms/LoginForm'
 import {login} from  '../actions/auth'
 import {authErrors, isAuthenticated} from '../reducers'
-
+import SignInPage from '../pages/SignInPage'
 const Login = (props) => {
   if(props.isAuthenticated) {
      return  <Redirect to='/' />
@@ -13,7 +13,7 @@ const Login = (props) => {
 
   return (
      <div className="login-page">
-       <LoginForm {...props}/>
+       <SignInPage {...props} />
     </div>
   )
 }

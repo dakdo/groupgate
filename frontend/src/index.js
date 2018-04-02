@@ -11,6 +11,7 @@ import App from './App';
 import configureStore from './store'
 import {Route, Switch} from 'react-router'
 import Login from './containers/Login';
+import SignUp from './containers/SignUp';
 import PrivateRoute from './containers/PrivateRoute';
 // import SignInPage from './pages/SignInPage';
 import SignUpPage from './pages/SignUpPage'
@@ -23,7 +24,7 @@ ReactDOM.render((
     <ConnectedRouter history={history}>
 		<Switch>
 			<Route exact path="/login/" component={Login} />
-			<Route path='/signup' exact component={SignUpPage} />
+			<Route exact path='/signup/' component={SignUp} />
 			<PrivateRoute path="/" component={App}/>
 		</Switch>
     </ConnectedRouter>

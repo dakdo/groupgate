@@ -4,10 +4,8 @@ import EditableField from '../components/EditableField';
 import EditableTextArea from '../components/EditableTextArea';
 import CourseList from '../components/CourseList'
 import ReferenceList from '../components/ReferenceList';
-
 import Nav from '../components/Nav';
 import '../css/style.css';
-
 
 const BASE_URL = 'http://localhost:3000';
 const url= `${BASE_URL}/api/userinfos`;
@@ -20,6 +18,7 @@ export default class MyProfile extends Component {
   constructor(props) {
     super(props)
       this.state = {
+          token: '',
           id: '',
           displayName: '',
           aboutMe: '',
@@ -29,6 +28,12 @@ export default class MyProfile extends Component {
 
   componentDidMount() {
     this.getUserInfo();
+    console.log("my access is: ", this.props.access)
+    this.setState({
+      token: this.props.access.token,
+      id: this.props.access.user_id,
+      displayName: this.props.access.username
+    })
   }
 
   getUserInfo(){
@@ -80,6 +85,10 @@ export default class MyProfile extends Component {
 
             <Nav />
             <br/>
+             <h5 className="ui dividing header">Display Token</h5>
+              <EditableField label=""
+                              value = {this.state.token}
+                              onChange = {this.update.bind(this)} />
 
               {/*Display Name Section*/}
               <h5 className="ui dividing header">Display Name</h5>

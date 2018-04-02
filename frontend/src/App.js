@@ -9,16 +9,16 @@ import OtherUsersPage from './pages/OtherUsersPage';
 import OtherUserDetails from './components/OtherUserDetails';
 import RatingPage from './pages/RatingPage';
 
-const App = () => (
+const App = (props) => (
 
 	<Switch>
 		{/* <Route path='/' exact component={SignInPage} /> */}
 		{/* <Route path='/signup' exact component={SignUpPage} /> */}
-		<Route path='/' exact component={MyProfilePage} />
-		<Route path='/projGroups' exact component={ProjGroupsPage} />
-		<Route path='/otherUsers' exact component={OtherUsersPage} />
-		<Route path='/otherUsers/:id' exact component={OtherUserDetails} />
-		<Route path='/rating' exact component={RatingPage}/>
+		<Route path='/' render={()=><MyProfilePage access={props.access}/>}/>
+		<Route path='/projGroups' render={()=><ProjGroupsPage access={props.access}/>}/>
+		<Route path='/otherUsers' render={()=><OtherUsersPage access={props.access}/>}/>
+		<Route path='/otherUsers/:id' render={()=><OtherUserDetails access={props.access}/>}/>
+		<Route path='/rating' render={()=><RatingPage access={props.access}/>}/>
 	</Switch>
 
 )

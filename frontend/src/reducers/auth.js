@@ -46,6 +46,12 @@ export function accessToken(state) {
         return  state.access.token
     }
 }
+
+export function getAccess(state) {
+  if(state.access) {
+    return state.access
+  }
+}
     
 export function refreshToken(state) {
     if (state.refresh) {
