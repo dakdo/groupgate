@@ -52,6 +52,38 @@ For ratings (currently has no ownership):
 Filters groups with course with CMPT470
 /api/groups/?course="CMPT470"
 
+For invitations:
+
+/api/invites/
+
+status = 0 is no reply
+status = 1 is invite accepted (to_user is now in group)
+status = 2 is invite declined
+
+NOTE: Status does not need to be supplied and is 0 by default (indicating no response)
+
+Updates are not allowed
+
+```json
+{
+    "from_user": 1,
+    "to_user": 2,
+    "group": 1,
+    "status": 0
+}
+```
+
+/api/invites/<id>/response/
+
+This should be displayed for the user after the invite is sent out using the previous endpoint.
+
+POST only
+
+```json
+{
+	"response": true
+}
+
 How to run the backend:
 
 Requirements:
