@@ -26,17 +26,19 @@ export default class CourseList extends Component {
 	}
 
 	componentDidMount(){
-		this.getCourses();
+//		this.getCourses();
 	}
 
+/*
 	getCourses(){																																	// API call to load courses
 		axios.get(`${url}?q={ "user_id": ${this.state.userId}" } `)
 		.then(response => {
 				this.setState( {courses: response.data}, () => {
 					console.log('CL -> Trying to get courses:', this.state.courses);							/* DEBUG */
-				})
-		})
-	}
+//				})
+//		})
+//	}
+
 
 	getCurrentTermSemester(){
 		return (  (date.getMonth()+1) >= 1 && ((date.getMonth()+1) <= 4 ) ? 'Spring' :

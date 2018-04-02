@@ -25,17 +25,18 @@ export default class ReferenceList extends Component {
 	}
 
 	componentDidMount(){
-		this.getRefs();
+//		this.getRefs();
 	}
 
+/*
 	getRefs(){																																	// API call to load Refs
 		axios.get(`${url}?q={ "user_id": ${this.state.userId}" } `)
 		.then(response => {
 				this.setState( {courses: response.data}, () => {
 					console.log('CL -> Trying to get Refs:', this.state.references);							/* DEBUG */
-				})
-		})
-	}
+//				})
+//		})
+//	}
 
 	add(text) {																																		// Add button clicked handler
 		this.setState(prevState => ({
