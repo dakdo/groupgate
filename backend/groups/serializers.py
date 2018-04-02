@@ -91,3 +91,11 @@ class RatingSerializer(serializers.ModelSerializer):
         fields = ('id', 'user', 'rating')
         model = models.Rating
 
+class InviteSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        fields = ('id', 'from_user', 'to_user', 'group', 'status')
+        model=models.Invite
+
+class InviteResponseSerializer(serializers.Serializer):
+    response = serializers.BooleanField(required=True)

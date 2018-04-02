@@ -1,13 +1,14 @@
-from rest_framework import viewsets, generics
+from rest_framework import viewsets, generics, status, mixins
 from groups import models
-from .serializers import UserSerializer, GroupCreateSerializer, RatingSerializer
+from .serializers import UserSerializer, GroupCreateSerializer, RatingSerializer, InviteResponseSerializer, InviteSerializer
 from django.contrib.auth import get_user_model
 from rest_framework.decorators import detail_route
 from rest_framework.response import Response
 from groups import permissions
 from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly, AllowAny
 
-
+from django.http import Http404
+from rest_framework.views import APIView
 UserModel = get_user_model()
 
 class UserViewSet(viewsets.ModelViewSet):
@@ -57,3 +58,52 @@ class GroupViewSet(viewsets.ModelViewSet):
 class RatingViewSet(viewsets.ModelViewSet):
     queryset = models.Rating.objects.all()
     serializer_class = RatingSerializer
+
+class InviteView(mixins.CreateModelMixin,
+                 mixins.RetrieveModelMixin,
+                 mixins.DestroyModelMixin,
+                 mixins.ListModelMixin,
+                 viewsets.GenericViewSet):
+    queryset = models.Invite.objects.all()
+    serializer_class = InviteSerializer
+
+class InviteResponseView(APIView):
+    serializer_class = InviteResponseSerializer
+
+    def get_invite(self, pk):
+        try:
+            return models.Invite.objects.get(pk=pk)
+        except models.Invite.DoesNotExist:
+            raise Http404
+
+    def get_group(self, pk):
+        try:
+            return models.Group.objects.get(pk=pk)
+        except models.Group.DoesNotExist:
+            raise Http404
+
+    def get_user(self, pk):
+        try:
+            return models.CustomUser.objects.get(pk=pk)
+        except models.CustomUser.DoesNotExist:
+            raise Http404
+
+    def post(self, request, pk):
+        serializer = self.serializer_class(data=request.data)
+
+        if serializer.is_valid():
+            response = serializer.data['response']
+            invite = self.get_invite(pk)
+            group = self.get_group(invite.group.id)
+            user = self.get_user(invite.to_user.id)
+
+            if response == True:
+                membership = models.Membership(user=user, group=group, role="member")
+                membership.save()
+                invite.accept()
+                return Response({'success': "Invite accepted"}, status=status.HTTP_200_OK)
+            else:
+                invite.decline()
+                return Response({'success': "Invite declined"}, status=status.HTTP_200_OK)
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
