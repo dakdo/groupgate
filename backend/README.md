@@ -82,9 +82,9 @@ Allow a user to invite another to a group. The invite response is handled on ano
 }
 ```
 
-status = 0 is no reply
-status = 1 is invite accepted (to_user will be automatically added to group)
-status = 2 is invite declined
+* status = 0 is no reply
+* status = 1 is invite accepted (to_user will be automatically added to group)
+* status = 2 is invite declined
 
 NOTE: Status does not need to be supplied and is 0 by default (indicating no response)
 
