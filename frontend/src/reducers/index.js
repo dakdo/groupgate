@@ -8,6 +8,9 @@ export default combineReducers({
   router: routerReducer,
   signup: signup
 })
+
+export const getAccess =
+state => fromAuth.getAccess(state.auth)
 export const isAuthenticated =
  state => fromAuth.isAuthenticated(state.auth)
 export const accessToken = 

@@ -28,9 +28,11 @@ export default class MyProfile extends Component {
 
   componentDidMount() {
     this.getUserInfo();
-    console.log("my token is: ", this.props.accessToken)
+    console.log("my access is: ", this.props.access)
     this.setState({
-      token: this.props.accessToken
+      token: this.props.access.token,
+      id: this.props.access.user_id,
+      displayName: this.props.access.username
     })
   }
 

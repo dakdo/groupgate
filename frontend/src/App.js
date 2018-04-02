@@ -14,11 +14,11 @@ const App = (props) => (
 	<Switch>
 		{/* <Route path='/' exact component={SignInPage} /> */}
 		{/* <Route path='/signup' exact component={SignUpPage} /> */}
-		<Route path='/' render={()=><MyProfilePage accessToken={props.accessToken}/>}/>
-		<Route path='/projGroups' render={()=><ProjGroupsPage accessToken={props.accessToken}/>}/>
-		<Route path='/otherUsers' render={()=><OtherUsersPage accessToken={props.accessToken}/>}/>
-		<Route path='/otherUsers/:id' render={()=><OtherUserDetails accessToken={props.accessToken}/>}/>
-		<Route path='/rating' render={()=><RatingPage accessToken={props.accessToken}/>}/>
+		<Route path='/' render={()=><MyProfilePage access={props.access}/>}/>
+		<Route path='/projGroups' render={()=><ProjGroupsPage access={props.access}/>}/>
+		<Route path='/otherUsers' render={()=><OtherUsersPage access={props.access}/>}/>
+		<Route path='/otherUsers/:id' render={()=><OtherUserDetails access={props.access}/>}/>
+		<Route path='/rating' render={()=><RatingPage access={props.access}/>}/>
 	</Switch>
 
 )
