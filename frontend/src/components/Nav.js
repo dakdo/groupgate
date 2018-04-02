@@ -23,6 +23,8 @@ export default class Nav extends React.Component {
           </li>
           </ul>
 
+          <span>Hi, props    </span> 
+
           <Link to="/">Sign Out</Link>
       </nav>
 

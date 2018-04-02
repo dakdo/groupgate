@@ -42,7 +42,7 @@ export default class OtherUsers extends Component {
     return (
 
       <div className=" container fluid">
-          <Nav />
+      
           <br/>
           <table className="ui very basic table">
             <thead>

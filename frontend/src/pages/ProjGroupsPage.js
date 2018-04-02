@@ -17,7 +17,6 @@ export default class ProjGroups extends Component {
 
     return (
       <div className="container fluid">
-        <Nav />
 
         <br/>
 

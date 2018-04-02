@@ -40,7 +40,9 @@ export default class MyProfile extends Component {
       .then(response => {
         this.setState( {
           id: response.data.id,
-          displayName: response.data.first_name,                                    // justt testing, change to display name later
+          firstName: response.data.first_name,
+          lastName: response.data.last_name,
+          displayName: response.data.display_name,                                    // justt testing, change to display name later
           aboutMe: response.data.about_me,
           }, () => {
           console.log('MP -> Loading user: ', this.state);
@@ -86,21 +88,17 @@ export default class MyProfile extends Component {
         <div>
           <div className="container fluid">
 
-            <Nav access={this.props.access}/>
             <br/>
-             <h5 className="ui dividing header">Display Token</h5>
-              <EditableField label=""
-                              value = {this.state.token}
-                              onChange = {this.update.bind(this)} />
 
-              <h5 className="ui dividing header">record id</h5>
-              <EditableField label=""
-                              value = {this.state.id}
-                              onChange = {this.update.bind(this)} />
 
               <h5 className="ui dividing header">First Name</h5>
               <EditableField label=""
                               value = {this.state.firstName}
+                              onChange = {this.update.bind(this)} />
+
+              <h5 className="ui dividing header">Last Name</h5>
+              <EditableField label=""
+                              value = {this.state.lastName}
                               onChange = {this.update.bind(this)} />
 
 
