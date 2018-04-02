@@ -10,9 +10,9 @@ import 'bootstrap/dist/css/bootstrap.css';
 import App from './App';
 import configureStore from './store'
 import {Route, Switch} from 'react-router'
-import Login from './containers/Login';
-import SignUp from './containers/SignUp';
-import PrivateRoute from './containers/PrivateRoute';
+import Login from './pages/Login';
+import SignUp from './pages/SignUp';
+import PrivateRoute from './pages/PrivateRoute';
 // import SignInPage from './pages/SignInPage';
 import SignUpPage from './pages/SignUpPage'
 

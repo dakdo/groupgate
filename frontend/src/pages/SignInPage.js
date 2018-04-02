@@ -18,10 +18,6 @@ render(){
         <h1 className="mr-auto col-sm-3">Group Gate</h1>
 
 
-          Dummy link to MYProfile -->
-          <Link to='/myProfile'>myprofile</Link> ----------
-
-
 
         <Link to="/signup">Sign Up</Link>
       </nav><br/><br/>

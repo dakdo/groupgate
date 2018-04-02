@@ -54,7 +54,7 @@ npm manifest:
       "validator": "^9.4.1"
     },
     "scripts": {
-      "start": "PORT=3001 && react-scripts start",
+      "start": "PORT=3001 --proxy-confix proxy.conf.json && react-scripts start",
       "start-pc": "set PORT=3001 && react-scripts start",
       "build": "react-scripts build",
       "test": "react-scripts test --env=jsdom",
@@ -73,7 +73,8 @@ npm manifest:
       "eslint-plugin-react": "^7.7.0",
       "prettier": "^1.11.1",
       "react-router-dom": "^4.2.2"
-    }
+    },
+    "proxy": "http://localhost:8000/"
   }
 
 yarn manifest: 
@@ -8130,8 +8131,8 @@ Trace:
   Error: Command failed.
   Exit code: 127
   Command: sh
-  Arguments: -c PORT=3001 && react-scripts start
-  Directory: /Users/otakar/Dev/JS/gp5/frontend
+  Arguments: -c PORT=3001 --proxy-confix proxy.conf.json && react-scripts start
+  Directory: /Users/otakar/Dev/JS2/groupgate/frontend
   Output:
   
       at ProcessTermError.MessageError (/Users/otakar/.nvm/versions/node/v9.4.0/lib/node_modules/yarn/lib/cli.js:186:110)

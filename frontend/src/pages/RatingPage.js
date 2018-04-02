@@ -22,7 +22,7 @@ export default class Rating extends Component {
   render() {
     return (
       <div className="container">
-          <Nav />
+      
           <div className="ui segment">
           <Grid centered columns={3}>
             <Grid.Column>

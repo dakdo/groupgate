@@ -16,6 +16,7 @@ class CustomUser(AbstractUser):
 
     groups = models.ManyToManyField('Group', through = 'Membership', blank=True)
     display_name = models.CharField(max_length=255, blank=True)
+    about_me = models.TextField(blank=True)
     
     def __str__(self):
         return self.username

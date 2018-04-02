@@ -7,10 +7,10 @@ import ReferenceList from '../components/ReferenceList';
 import Nav from '../components/Nav';
 import '../css/style.css';
 
-const BASE_URL = 'http://localhost:3000';
-const url= `${BASE_URL}/api/userinfos`;
+// const BASE_URL = 'http://localhost:3000';
+// const url= `${BASE_URL}/api/userinfos`;
 
-  const userId = '5ab93f5262a8ef074012e04a';    // DEV: you have to update this user ID with id from your backend
+  //const userId = '5ab93f5262a8ef074012e04a';    // DEV: you have to update this user ID with id from your backend
                                                 // 5ab877baf628341800003765   //restdb.io
 
 export default class MyProfile extends Component {
@@ -18,8 +18,10 @@ export default class MyProfile extends Component {
   constructor(props) {
     super(props)
       this.state = {
-          token: '',
-          id: '',
+          token: this.props.access.token,
+          id: this.props.access.user_id,
+          firstName: '',
+          lastName: '',
           displayName: '',
           aboutMe: '',
       }
@@ -28,25 +30,26 @@ export default class MyProfile extends Component {
 
   componentDidMount() {
     this.getUserInfo();
-    console.log("my access is: ", this.props.access)
-    this.setState({
-      token: this.props.access.token,
-      id: this.props.access.user_id,
-      displayName: this.props.access.username
-    })
   }
 
   getUserInfo(){
-    axios.get(`http://localhost:3000/api/userinfos/${userId}`)
+
+    console.log("MP -> id used for APi call: ", this.props.access.user_id)
+/
+    axios.get( `http://localhost:8000/api/users/${this.props.access.user_id}/`, { "Content-Type": "application/json" } )
       .then(response => {
         this.setState( {
           id: response.data.id,
-          displayName: response.data.display_name,
+          firstName: response.data.first_name,
+          lastName: response.data.last_name,
+          displayName: response.data.display_name,                                    // justt testing, change to display name later
           aboutMe: response.data.about_me,
           }, () => {
           console.log('MP -> Loading user: ', this.state);
         })
       })
+
+      
   }
 
   update( param, newValue, i ){
@@ -68,12 +71,14 @@ export default class MyProfile extends Component {
       default: console.log('nothing got updated')
     }
 
+
     axios.request({
       method:'patch',
       url:`http://localhost:3000/api/userinfos/${this.state.id}`,
       data: dataPackage
     }).then(response => {
     }).catch(err => console.log(err));
+
 
   }
 
@@ -83,18 +88,29 @@ export default class MyProfile extends Component {
         <div>
           <div className="container fluid">
 
-            <Nav access={this.props.access}/>
             <br/>
-             <h5 className="ui dividing header">Display Token</h5>
+
+
+              <h5 className="ui dividing header">First Name</h5>
               <EditableField label=""
-                              value = {this.state.token}
+                              value = {this.state.firstName}
                               onChange = {this.update.bind(this)} />
+
+              <h5 className="ui dividing header">Last Name</h5>
+              <EditableField label=""
+                              value = {this.state.lastName}
+                              onChange = {this.update.bind(this)} />
+
 
               {/*Display Name Section*/}
               <h5 className="ui dividing header">Display Name</h5>
               <EditableField label=""
                               value = {this.state.displayName}
                               onChange = {this.update.bind(this)} />
+
+
+
+
 
               {/*About Me Section*/}
               <h5 className="ui dividing header">About Me</h5>
@@ -104,11 +120,11 @@ export default class MyProfile extends Component {
 
               {/*My References Section*/}
               <h5 className="ui dividing header">My Courses with Project Groups</h5>
-              <CourseList userId = {userId} />
+              <CourseList userId = {this.state.id} />
 
               {/*My References Section*/}
               <h5 className="ui dividing header">My Reference Profiles</h5>
-              <ReferenceList userId = {userId} />
+              <ReferenceList userId = {this.state.id} />
 
           </div>
       </div>
