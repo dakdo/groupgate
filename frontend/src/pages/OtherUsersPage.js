@@ -12,14 +12,29 @@ export default class OtherUsers extends Component {
     super();
     this.state = {
       id: '',
-      users: []
+      users: [],
+      myinfo: {}
     };
     this.getOtherUsers = this.getOtherUsers.bind(this);
     this.sendInvite = this.sendInvite.bind(this);
+    this.getMyInfo = this.getMyInfo.bind(this);
   }
   componentDidMount() {
     this.getOtherUsers();
+    this.getMyInfo();
   }
+
+  getMyInfo() {
+    axios.get(`http://localhost:8000/api/users/${this.props.access.user_id}`)
+      .then(response => {
+        this.setState( {
+          myinfo: response.data
+          })
+        console.log(this.state.myinfo)
+      })
+      console.log("line 35")
+  }
+
   getOtherUsers(){
     axios.get("http://localhost:3000/api/users/")
       .then(response => {
@@ -31,11 +46,16 @@ export default class OtherUsers extends Component {
       })
   }
 
+  //TODO: should have a prop already containing user groups. Need a way to select a group
   sendInvite(user) {
+    if (this.state.myinfo.groups.length < 1) {
+      alert("You currently don't belong to any group!");
+      return;
+    }
     var data = {
       from_user: this.props.access.user_id,
       to_user: user.id,
-      group: 1,
+      group: this.state.myinfo.groups[0],
       status:0
        };
      var instance = axios.create({
@@ -46,7 +66,7 @@ export default class OtherUsers extends Component {
    
    instance.post('invites/',data)
    .then(response => {
-    alert("invite successful")
+    alert("invited user to your first group")
     }).catch(err => console.log(err));
   }
 
