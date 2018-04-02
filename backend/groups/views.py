@@ -1,4 +1,4 @@
-from rest_framework import viewsets, generics, status
+from rest_framework import viewsets, generics, status, mixins
 from groups import models
 from .serializers import UserSerializer, GroupCreateSerializer, RatingSerializer, InviteResponseSerializer, InviteSerializer
 from django.contrib.auth import get_user_model
@@ -59,7 +59,11 @@ class RatingViewSet(viewsets.ModelViewSet):
     queryset = models.Rating.objects.all()
     serializer_class = RatingSerializer
 
-class InviteView(viewsets.ModelViewSet):
+class InviteView(mixins.CreateModelMixin,
+                 mixins.RetrieveModelMixin,
+                 mixins.DestroyModelMixin,
+                 mixins.ListModelMixin,
+                 viewsets.GenericViewSet):
     queryset = models.Invite.objects.all()
     serializer_class = InviteSerializer
 
@@ -94,7 +98,6 @@ class InviteResponseView(APIView):
             user = self.get_user(invite.to_user.id)
 
             if response == True:
-                # group.add_member(user)
                 membership = models.Membership(user=user, group=group, role="member")
                 membership.save()
                 invite.accept()

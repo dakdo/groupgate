@@ -64,7 +64,7 @@ class Invite(models.Model):
      from_user=models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name="person_inviting")
      to_user=models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name="person_invited")
      group=models.ForeignKey(Group, on_delete=models.CASCADE, related_name="group_invite")
-     status=models.IntegerField(blank=True, null=True)
+     status=models.IntegerField(blank=True, default=0)
 
      def accept(self):
 
