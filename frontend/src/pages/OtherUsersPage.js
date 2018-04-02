@@ -5,8 +5,8 @@ import Nav from '../components/Nav';
 import { Button } from "semantic-ui-react";
 //import OtherUser from '../components/OtherUser';
 
-  const userId = '5ab93f5262a8ef074012e04a';    // you have to update this user ID with id from your backend
-
+const userId = '5ab93f5262a8ef074012e04a';    // you have to update this user ID with id from your backend
+const baseUrl = "http://localhost:8000/api/";
 export default class OtherUsers extends Component {
   constructor() {
     super();
@@ -15,12 +15,13 @@ export default class OtherUsers extends Component {
       users: []
     };
     this.getOtherUsers = this.getOtherUsers.bind(this);
+    this.sendInvite = this.sendInvite.bind(this);
   }
   componentDidMount() {
     this.getOtherUsers();
   }
   getOtherUsers(){
-    axios.get(`http://localhost:3000/api/userinfos?filter[where][id][neq]=${userId}`)
+    axios.get("http://localhost:3000/api/users/")
       .then(response => {
         this.setState( {
           users: response.data,
@@ -28,6 +29,25 @@ export default class OtherUsers extends Component {
           console.log('OUP -> getOtherUsers: ',this.state.users);
         })
       })
+  }
+
+  sendInvite(user) {
+    var data = {
+      from_user: this.props.access.user_id,
+      to_user: user.id,
+      group: 1,
+      status:0
+       };
+     var instance = axios.create({
+        baseURL: "http://localhost:3000/api/",
+        headers: {'Access-Control-Allow-Headers': 'Authorization',
+                  'Authorization': `JWT ${this.props.access.token}`}
+     });
+   
+   instance.post('invites/',data)
+   .then(response => {
+    alert("invite successful")
+    }).catch(err => console.log(err));
   }
 
   ratingRender(user){
@@ -57,10 +77,10 @@ export default class OtherUsers extends Component {
               {this.state.users.map((user,i)=>{
                 return(
                   <tr key={i}>
-                    <td><Link to={`/otherUsers/${user.id}`} >{user.display_name}</Link></td>
+                    <td><Link to={`/otherUsers/${user.id}`} >{user.username}</Link></td>
                     {this.ratingRender(user)}
                     <td>{user.num_of_votes}</td>
-                    <td><Button basic color="blue">Invite</Button></td>
+                    <td><Button basic color="blue" onClick={()=>this.sendInvite(user)}>Invite</Button></td>
                   </tr>
                 )
               })}
