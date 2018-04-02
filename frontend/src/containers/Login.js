@@ -1,6 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { Redirect } from 'react-router'
+import { withRouter } from 'react-router-dom';
 
 import LoginForm from '../components/forms/LoginForm'
 import {login} from  '../actions/auth'
@@ -29,4 +30,4 @@ const mapDispatchToProps = (dispatch) => ({
   }
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(Login);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Login));

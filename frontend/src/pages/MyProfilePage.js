@@ -86,7 +86,7 @@ export default class MyProfile extends Component {
         <div>
           <div className="container fluid">
 
-            <Nav />
+            <Nav access={this.props.access}/>
             <br/>
              <h5 className="ui dividing header">Display Token</h5>
               <EditableField label=""
