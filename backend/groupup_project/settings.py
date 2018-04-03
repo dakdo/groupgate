@@ -98,6 +98,8 @@ CORS_ORIGIN_WHITELIST = (
     'localhost:3001/',
 )
 
+CORS_ORIGIN_ALLOW_ALL = True   
+
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': (
         'rest_framework.permissions.IsAuthenticated',
