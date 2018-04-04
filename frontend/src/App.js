@@ -13,7 +13,7 @@ const App = (props) => (
 	
 
 	<div className="container fluid">
-	<Nav access={this.access}/>
+	<Nav access={this.access} dispatch={props.dispatch}/>
 	<Switch>
 		{/* <Route path='/' exact component={SignInPage} /> */}
 		{/* <Route path='/signup' exact component={SignUpPage} /> */}
