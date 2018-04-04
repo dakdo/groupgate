@@ -48,7 +48,7 @@ export default class OtherUsers extends Component {
 
   //TODO: should have a prop already containing user groups. Need a way to select a group
   sendInvite(user) {
-    if (this.state.myinfo.groups.length < 1) {
+    if (this.state.myinfo.groups == null || this.state.myinfo.groups.length< 1) {
       alert("You currently don't belong to any group!");
       return;
     }
