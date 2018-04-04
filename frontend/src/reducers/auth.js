@@ -29,7 +29,11 @@ export default (state=initialState, action) => {
       }
     case auth.LOGIN_FAILURE:
     case auth.LOGOUT:
-      return initialState
+      return {
+        access: undefined,
+        refresh: undefined,
+        errors: {},
+      }
       
     case auth.TOKEN_FAILURE:
       return {

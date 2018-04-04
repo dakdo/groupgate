@@ -1,9 +1,16 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import logoImg from "../assets/logo.png";
+import { logout } from  '../actions/auth';
 
 export default class Nav extends React.Component {
-
+  constructor(props) {
+    super(props);
+    this.onClickLogout = this.onClickLogout.bind(this);
+  }
+  onClickLogout() {
+    this.props.dispatch(logout())
+  }
   render() {
     return (
       <nav className="navbar">
@@ -22,10 +29,7 @@ export default class Nav extends React.Component {
           <Link to='/' className="nav-link">My Profile</Link>
           </li>
           </ul>
-
-          <span>Hi, props    </span> 
-
-          <Link onClick={this.props.logOut}>Sign Out</Link>
+          <Link to='/login' onClick={this.onClickLogout}>Sign Out</Link>
       </nav>
 
     );

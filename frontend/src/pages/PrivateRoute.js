@@ -2,12 +2,11 @@ import React from 'react'
 import { Route, Redirect } from 'react-router'
 import { connect } from 'react-redux'
 import * as reducers from '../reducers'
-import {logout} from  '../actions/auth'
 
-const PrivateRoute = ({ component: Component, access, isAuthenticated, ...rest }) => (
+const PrivateRoute = ({ component: Component, access, isAuthenticated, dispatch, ...rest }) => (
   <Route {...rest} render={(props) => (
     isAuthenticated ? (
-      <Component {...props} access={access}/>
+      <Component {...props} access={access} dispatch={dispatch}/>
     ) : (
       <Redirect to={{
         pathname: '/login',
@@ -23,9 +22,7 @@ const mapStateToProps = (state) => ({
 })
 
 const mapDispatchToProps = (dispatch) => ({
-  logOut: () => {
-    dispatch(logout())
-  }
+  dispatch: dispatch
 })
   
 export default connect(mapStateToProps, mapDispatchToProps)(PrivateRoute);

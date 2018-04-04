@@ -50,7 +50,7 @@ export const signup = (data) =>({
   }
 })
 
-export const logout = () => {
+export function logout(){
   return {
     type: LOGOUT
   }
