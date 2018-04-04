@@ -25,7 +25,7 @@ export default class Nav extends React.Component {
 
           <span>Hi, props    </span> 
 
-          <Link to="/">Sign Out</Link>
+          <Link onClick={this.props.logOut}>Sign Out</Link>
       </nav>
 
     );

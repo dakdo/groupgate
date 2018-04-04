@@ -2,6 +2,7 @@ import React from 'react'
 import { Route, Redirect } from 'react-router'
 import { connect } from 'react-redux'
 import * as reducers from '../reducers'
+import {logout} from  '../actions/auth'
 
 const PrivateRoute = ({ component: Component, access, isAuthenticated, ...rest }) => (
   <Route {...rest} render={(props) => (
@@ -21,4 +22,10 @@ const mapStateToProps = (state) => ({
   access: reducers.getAccess(state)
 })
 
-export default connect(mapStateToProps, null)(PrivateRoute);
+const mapDispatchToProps = (dispatch) => ({
+  logOut: () => {
+    dispatch(logout())
+  }
+})
+  
+export default connect(mapStateToProps, mapDispatchToProps)(PrivateRoute);
