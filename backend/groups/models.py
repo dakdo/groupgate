@@ -3,6 +3,7 @@ from django.contrib.auth.models import AbstractUser
 from django.conf import settings
 
 class CustomUser(AbstractUser):
+
     first_name = models.CharField(max_length=255)
     last_name = models.CharField(max_length=255)
 
@@ -28,6 +29,7 @@ class CustomUser(AbstractUser):
 #         return self.user
 
 class Group(models.Model):
+
     name = models.CharField(max_length=200)
     description = models.TextField()
     # owner = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='owner')
@@ -40,13 +42,15 @@ class Group(models.Model):
         return self.name
 
 class Membership(models.Model):
-    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
-    group = models.ForeignKey(Group, on_delete=models.CASCADE)
-    role = models.CharField(max_length=100)
+
+    user_id = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    user_role = models.CharField(max_length=100)
+    group_id = models.ForeignKey(Group, on_delete=models.CASCADE)
 
     # def add_membership(user, group, role):
 
 class Rating(models.Model):
+
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     
     # STAR_CONVERSION = (
@@ -62,21 +66,15 @@ class Rating(models.Model):
     rating = models.IntegerField()
 
 class Invite(models.Model):
+
      from_user=models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name="person_inviting")
      to_user=models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name="person_invited")
      group=models.ForeignKey(Group, on_delete=models.CASCADE, related_name="group_invite")
      status=models.IntegerField(blank=True, default=0)
 
      def accept(self):
-
-        #  attending=Attending(attendant=to_user,wedding=Wedding)
-        #  attendant.save()
-
          self.status=1
          self.save()
-
-        #  notification.send([self.to_user],"invite_accepted",{"invitation":self})
-
 
      def decline(self):
          self.status=2

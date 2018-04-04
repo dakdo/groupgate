@@ -6,13 +6,13 @@ from django.db.models import Avg
 UserModel = get_user_model()
 
 class MembershipSerializer(serializers.ModelSerializer):
-    group_id = serializers.ReadOnlyField(source='group.id')
-    group_name = serializers.ReadOnlyField(source='group.name')
-    user_id = serializers.ReadOnlyField(source='customuser.id')
-    user_name = serializers.ReadOnlyField(source='customuser.first_name')
+
+    group_name = serializers.ReadOnlyField(source='group_id.name')
+    user_display_name = serializers.ReadOnlyField(source='user_id.display_name')
+    
     class Meta:
         model = models.Membership
-        fields = ('group_id', 'group_name', 'user_id', 'user_name', 'user', 'role',)
+        fields = ('group_id', 'group_name', 'user_id', 'user_display_name', 'user_role',)
 
 class UserSerializer(serializers.ModelSerializer):
 
@@ -25,12 +25,7 @@ class UserSerializer(serializers.ModelSerializer):
     average_rating = serializers.SerializerMethodField()
     
     def get_average_rating(self, obj):
-        print("\n\n\n")
-        # print(models.Rating.objects.filter(user=obj.id)).all().aggregate(Avg('rating'))
-        print(obj.id)
-        print("\n\n\n")
-        # average_rating = models.Rating.objects.filter(user=obj.id).aggregate(Avg('rating')).get('rating__rating')
-        # average_rating = models.Rating.objects.all().aggregate(Avg('rating'))
+
         average_rating = models.Rating.objects.all().filter(user=obj.id).aggregate(Avg('rating'))
         if average_rating is None:
             return 0
@@ -53,6 +48,7 @@ class UserSerializer(serializers.ModelSerializer):
         fields = ('id', 'username', 'password', 'first_name', 'last_name', 'display_name', 'groups', 'average_rating', 'about_me')
 
 class GroupCreateSerializer(serializers.ModelSerializer):
+
     members = MembershipSerializer(source='membership_set', many=True, required=False)
     def create(self, validated_data):
         user_data = validated_data.pop('membership_set')
@@ -81,6 +77,7 @@ class GroupCreateSerializer(serializers.ModelSerializer):
         # lookup_field = 'course'
 
 class RatingSerializer(serializers.ModelSerializer):
+
     # user = serializers.SerializerMethodField(source='get_user_id', read_only=True)
 
     # def get_user_id(self, obj):
@@ -98,4 +95,5 @@ class InviteSerializer(serializers.ModelSerializer):
         model=models.Invite
 
 class InviteResponseSerializer(serializers.Serializer):
+
     response = serializers.BooleanField(required=True)
