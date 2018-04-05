@@ -51,13 +51,13 @@ class UserSerializer(serializers.ModelSerializer):
 class GroupCreateSerializer(serializers.ModelSerializer):
 
     members = MembershipSerializer(source='membership_set', many=True, required=False)
+
     def create(self, validated_data):
         user_data = validated_data.pop('membership_set')
-        validated_data['owner'] = self.context['request'].user
         group = models.Group.objects.create(**validated_data)
         for user in user_data:
             d=dict(user)
-            models.Membership.objects.create(group=group, user=d['user'], role=d['role'])
+            models.Membership.objects.create(group_id=group, user_id=d['user_id'], user_role=d['user_role'])
         return group
 
     def update(self, instance, validated_data):
@@ -65,10 +65,10 @@ class GroupCreateSerializer(serializers.ModelSerializer):
         for item in validated_data:
             if models.Group._meta.get_field(item):
                 setattr(instance, item, validated_data[item])
-        models.Membership.objects.filter(group=instance).delete()
+        models.Membership.objects.filter(group_id=instance).delete()
         for user in user_data:
             d=dict(user)
-            models.Membership.objects.create(group=instance, user=d['user'], role=d['role'])
+            models.Membership.objects.create(group_id=instance, user_id=d['user_id'], user_role=d['user_role'])
         instance.save()
         return instance
 

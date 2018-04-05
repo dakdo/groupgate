@@ -33,7 +33,7 @@ class Group(models.Model):
     name = models.CharField(max_length=200)
     description = models.TextField()
     # owner = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='owner')
-    owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, blank=True)
 
     members = models.ManyToManyField(CustomUser, blank=True, related_name='members')
     course =models.CharField(max_length=200)
@@ -45,7 +45,7 @@ class Membership(models.Model):
 
     user_id = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     user_role = models.CharField(max_length=100)
-    group_id = models.ForeignKey(Group, on_delete=models.CASCADE)
+    group_id = models.ForeignKey(Group, on_delete=models.CASCADE, blank=True)
 
     # def add_membership(user, group, role):
 
@@ -79,3 +79,9 @@ class Invite(models.Model):
      def decline(self):
          self.status=2
          self.save()
+
+class Course(models.Model):
+
+    name = models.CharField(max_length=255)
+    term = models.CharField(max_length=255)
+    year = models.CharField(max_length=255)

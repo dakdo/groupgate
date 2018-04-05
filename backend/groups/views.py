@@ -34,6 +34,9 @@ class GroupViewSet(viewsets.ModelViewSet):
             queryset = queryset.filter(course=course)
         return queryset
 
+    def perform_create(self, serializer):
+        serializer.save(owner=self.request.user)
+
     # @detail_route(methods=['get'])
     # def users_in_class()
     # @detail_route(methods=['patch'])
