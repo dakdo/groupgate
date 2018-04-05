@@ -32,6 +32,10 @@ class GroupViewSet(viewsets.ModelViewSet):
         course = self.request.query_params.get('course', None)
         if course is not None:
             queryset = queryset.filter(course=course)
+        
+        owner = self.request.query_params.get('owner', None)
+        if owner is not None:
+            queryset = queryset.filter(owner=owner)
         return queryset
 
     # def perform_create(self, serializer):
