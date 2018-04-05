@@ -64,7 +64,15 @@ Create a group with existing users with an assigned role.
 Filters groups with course with CMPT470
 
 GET
-/api/groups/?course="CMPT470"
+/api/groups/?course=CMPT470
+
+
+### Filter groups by owner
+
+Filter groups with owner id of 4
+
+GET
+/api/groups/?owner=4
 
 
 ## Invites
