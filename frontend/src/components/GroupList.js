@@ -23,6 +23,7 @@ export default class ProjectGroup extends Component {
 		this.onCancel = this.onCancel.bind(this)
 		this.getGroups = this.getGroups.bind(this)
 		this.myGroupsButton = this.myGroupsButton.bind(this)
+		//this.displayGroups = this.displayGroups.bind(this)
 		this.getAxiosHeaders = this.getAxiosHeaders.bind(this)
 	}
 
@@ -49,30 +50,24 @@ export default class ProjectGroup extends Component {
       }
     }
 
+		// GET LIST OF MY GROUPS  - REPLACE WITH CALL TO groups
 		if(this.props.myGroups){
-			axios.get(`${url}`)						// NEED to fin tune the query, currently getting all records
-			.then(response => {
-				this.setState( {
-					groups: response.data,
-					}, () => {
-					console.log('GL-> populate groups, data:', response.data);
-				})
-			})
-																													// if props. flag = true, get my groups
-		/*
-			axios.get(`${url}`, axiosConfig )
-			.then(response => {
-				this.setState( {
-					groups: response.data,
-					}, () => {
-					console.log("GL -> state after APi request: ", this.state);
-				})
-			})
-	*/
+/*
+			axios.get( `http://localhost:8000/api/groups?owner_id=${this.props.access.user_id}/`,
+			this.getAxiosHeaders() )
+	      .then(response => {
+	        this.setState( {
+	          id: response.data.id,
+	          groups: response.data.groups,
+	          }, () => {
+	        })
+	      })
+*/
 
-		}
+
+}				// GET LIST OF OTHER GROUPS
 		else{
-			axios.get(`${url}?filter={"where":{"group_owner":{"neq":"${this.props.userId}"}}}`)
+			axios.get(`${url}`, this.getAxiosHeaders())
 			.then(response => {
 				this.setState( {groups: response.data}, () => {
 				console.log(this.state)
@@ -80,7 +75,6 @@ export default class ProjectGroup extends Component {
 			})
 		}
   }
-
 
 	add(text) {
 		this.setState(prevState => ({
@@ -184,16 +178,22 @@ export default class ProjectGroup extends Component {
 					)
 				}
 		}
+/*
+		displayGroups(){
+			if( this.state.groups.length > 0 ){
+				return(
+					<span>{this.state.groups.map(this.eachGroup) }</span>
+				)
+			}
+		}
 
+			{this.displayGroups()}
+*/
 		render() {
-			return (
+			return(
 				<div className="board">
-				{this.myGroupsButton()}
-				{this.state.groups.map(this.eachGroup)}
-
+				{this.state.groups.map(this.eachGroup) }
 				</div>
 			)
 		}
 	}
-
-	//

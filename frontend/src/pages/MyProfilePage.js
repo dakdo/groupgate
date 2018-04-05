@@ -7,8 +7,8 @@ import ReferenceList from '../components/ReferenceList';
 import Nav from '../components/Nav';
 import '../css/style.css';
 
-// const BASE_URL = 'http://localhost:8000';
-// const url= `${BASE_URL}/api/uses`;
+const BASE_URL = 'http://localhost:8000';
+const url= `${BASE_URL}/api/`;
 
 export default class MyProfile extends Component {
 
