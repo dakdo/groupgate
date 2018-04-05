@@ -55,3 +55,9 @@ export function logout(){
     type: LOGOUT
   }
 }
+
+export function resetSignup(){
+  return {
+    type: SIGNUP_FAILURE
+  }
+}

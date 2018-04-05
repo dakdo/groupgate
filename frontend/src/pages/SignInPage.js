@@ -19,7 +19,7 @@ render(){
 
 
 
-        <Link to="/signup">Sign Up</Link>
+        <Link to="/signup" onClick={this.props.resetSignup()}>Sign Up</Link>
       </nav><br/><br/>
 
       {/* Body */}

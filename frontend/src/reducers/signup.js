@@ -23,10 +23,7 @@ export default (state=initialState, action) => {
     case auth.SIGNUP_FAILURE:
       return {
          requesting: false,
-         signed_up: false,
-         errors: 
-             action.payload.response || 
-                {'non_field_errors': action.payload.statusText},
+         signed_up: false
       }
     default:
       return state

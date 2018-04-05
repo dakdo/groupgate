@@ -8,7 +8,6 @@ import {authErrors, isSignedUp} from '../reducers'
 import SignUpPage from '../pages/SignUpPage'
 const SignUp = (props) => {
   if(props.isSignedUp) {
-    console.log('line 11')
      return  <Redirect to='/login/' />
   }
 

@@ -4,7 +4,7 @@ import { Redirect } from 'react-router'
 import { withRouter } from 'react-router-dom';
 
 import LoginForm from '../components/forms/LoginForm'
-import {login} from  '../actions/auth'
+import {login, resetSignup } from  '../actions/auth'
 import {authErrors, isAuthenticated} from '../reducers'
 import SignInPage from '../pages/SignInPage'
 const Login = (props) => {
@@ -27,6 +27,9 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
   onSubmit: (username, password) => {
     dispatch(login(username, password))
+  },
+  resetSignup : () => {
+    dispatch(resetSignup())
   }
 })
 
