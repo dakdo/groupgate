@@ -5,8 +5,8 @@ import Nav from '../components/Nav';
 import { Button } from "semantic-ui-react";
 //import OtherUser from '../components/OtherUser';
 
-const userId = '5ab93f5262a8ef074012e04a';    // you have to update this user ID with id from your backend
-const baseUrl = "http://localhost:8000/api/";
+
+const baseUrl = "http://localhost:8000/api";
 export default class OtherUsers extends Component {
   constructor() {
     super();
@@ -17,6 +17,7 @@ export default class OtherUsers extends Component {
     };
     this.getOtherUsers = this.getOtherUsers.bind(this);
     this.sendInvite = this.sendInvite.bind(this);
+    this.getAxiosHeaders = this.getAxiosHeaders.bind(this)
     this.getMyInfo = this.getMyInfo.bind(this);
   }
   componentDidMount() {
@@ -24,19 +25,29 @@ export default class OtherUsers extends Component {
     this.getMyInfo();
   }
 
+  getAxiosHeaders(){
+    return{
+      headers: {
+        'Content-Type' : `application/json`,
+        Authorization: `JWT ${this.props.access.token}`
+      }
+    }
+  }
+
   getMyInfo() {
-    axios.get(`http://localhost:8000/api/users/${this.props.access.user_id}`)
+
+    axios.get(`${baseUrl}/users/`)
       .then(response => {
         this.setState( {
-          myinfo: response.data
+          users: response.data
           })
-        console.log(this.state.myinfo)
+        console.log("OU-> get data: ", this.state)
       })
       console.log("line 35")
   }
 
   getOtherUsers(){
-    axios.get("http://localhost:3000/api/users/")
+    axios.get("http://localhost:8000/api/users/")
       .then(response => {
         this.setState( {
           users: response.data,
@@ -63,7 +74,7 @@ export default class OtherUsers extends Component {
         headers: {'Access-Control-Allow-Headers': 'Authorization',
                   'Authorization': `JWT ${this.props.access.token}`}
      });
-   
+
    instance.post('invites/',data)
    .then(response => {
     alert("invited user to your first group")
@@ -82,7 +93,7 @@ export default class OtherUsers extends Component {
     return (
 
       <div className=" container fluid">
-      
+
           <br/>
           <table className="ui very basic table">
             <thead>
