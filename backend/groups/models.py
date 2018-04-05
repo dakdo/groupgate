@@ -2,6 +2,17 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.conf import settings
 
+class Course(models.Model):
+    TERM_CHOICES = (
+        ('SUMMER', 'Summer'),
+        ('FALL', 'Fall'),
+        ('SPRING', 'Spring')
+    )
+
+    name = models.CharField(max_length=255)
+    term = models.CharField(max_length=255, choices=TERM_CHOICES)
+    year = models.CharField(max_length=255)
+
 class CustomUser(AbstractUser):
 
     first_name = models.CharField(max_length=255)
@@ -18,6 +29,7 @@ class CustomUser(AbstractUser):
     groups = models.ManyToManyField('Group', through = 'Membership', blank=True)
     display_name = models.CharField(max_length=255, blank=True)
     about_me = models.TextField(blank=True)
+    courses = models.ManyToManyField(Course, blank=True)
     
     def __str__(self):
         return self.username
@@ -79,9 +91,3 @@ class Invite(models.Model):
      def decline(self):
          self.status=2
          self.save()
-
-class Course(models.Model):
-
-    name = models.CharField(max_length=255)
-    term = models.CharField(max_length=255)
-    year = models.CharField(max_length=255)

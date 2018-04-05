@@ -104,3 +104,10 @@ class InviteSerializer(serializers.ModelSerializer):
 class InviteResponseSerializer(serializers.Serializer):
 
     response = serializers.BooleanField(required=True)
+
+class CourseSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        fields = ('id', 'name', 'term', 'year')
+        model = models.Course
+
