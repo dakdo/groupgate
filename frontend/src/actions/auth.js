@@ -37,7 +37,7 @@ export const signup = (data) =>({
   [RSAA]: {
     endpoint: '/api/users/',
     method: 'POST',
-    body: JSON.stringify({username: data.username, 
+    body: JSON.stringify({username: data.username,
                           password: data.password,
                           display_name: data.display_name,
                           first_name: data.first_name,

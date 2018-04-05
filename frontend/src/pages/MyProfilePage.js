@@ -7,49 +7,49 @@ import ReferenceList from '../components/ReferenceList';
 import Nav from '../components/Nav';
 import '../css/style.css';
 
-// const BASE_URL = 'http://localhost:3000';
-// const url= `${BASE_URL}/api/userinfos`;
-
-  //const userId = '5ab93f5262a8ef074012e04a';    // DEV: you have to update this user ID with id from your backend
-                                                // 5ab877baf628341800003765   //restdb.io
+// const BASE_URL = 'http://localhost:8000';
+// const url= `${BASE_URL}/api/uses`;
 
 export default class MyProfile extends Component {
 
   constructor(props) {
     super(props)
       this.state = {
-          token: this.props.access.token,
-          id: this.props.access.user_id,
           firstName: '',
           lastName: '',
           displayName: '',
           aboutMe: '',
       }
       this.update = this.update.bind(this);
+      this.getAxiosHeaders = this.getAxiosHeaders.bind(this);
   }
 
   componentDidMount() {
     this.getUserInfo();
   }
 
-  getUserInfo(){
 
-    console.log("MP -> id used for APi call: ", this.props.access.user_id)
-/
-    axios.get( `http://localhost:8000/api/users/${this.props.access.user_id}/`, { "Content-Type": "application/json" } )
+  getAxiosHeaders(){
+    return{
+      headers: {
+        'Content-Type' : `application/json`,
+        Authorization: `JWT ${this.props.access.token}`
+      }
+    }
+  }
+
+  getUserInfo(){
+    axios.get( `http://localhost:8000/api/users/${this.props.access.user_id}/`)
       .then(response => {
         this.setState( {
           id: response.data.id,
           firstName: response.data.first_name,
           lastName: response.data.last_name,
-          displayName: response.data.display_name,                                    // justt testing, change to display name later
+          displayName: response.data.display_name,
           aboutMe: response.data.about_me,
           }, () => {
-          console.log('MP -> Loading user: ', this.state);
         })
       })
-
-      
   }
 
   update( param, newValue, i ){
@@ -71,14 +71,10 @@ export default class MyProfile extends Component {
       default: console.log('nothing got updated')
     }
 
-
-    axios.request({
-      method:'patch',
-      url:`http://localhost:3000/api/userinfos/${this.state.id}`,
-      data: dataPackage
-    }).then(response => {
-    }).catch(err => console.log(err));
-
+    axios.patch(
+      `http://localhost:8000/api/users/${this.props.access.user_id}/`,
+      dataPackage, this.getAxiosHeaders()
+    ).then(response => {}).catch(err => console.log(err));
 
   }
 
@@ -91,26 +87,11 @@ export default class MyProfile extends Component {
             <br/>
 
 
-              <h5 className="ui dividing header">First Name</h5>
-              <EditableField label=""
-                              value = {this.state.firstName}
-                              onChange = {this.update.bind(this)} />
-
-              <h5 className="ui dividing header">Last Name</h5>
-              <EditableField label=""
-                              value = {this.state.lastName}
-                              onChange = {this.update.bind(this)} />
-
-
               {/*Display Name Section*/}
               <h5 className="ui dividing header">Display Name</h5>
               <EditableField label=""
                               value = {this.state.displayName}
                               onChange = {this.update.bind(this)} />
-
-
-
-
 
               {/*About Me Section*/}
               <h5 className="ui dividing header">About Me</h5>
