@@ -20,7 +20,7 @@ class UserSerializer(serializers.ModelSerializer):
     first_name = serializers.CharField(required=True)
     last_name = serializers.CharField(required=True)
     groups = MembershipSerializer(source='membership_set', many=True)
-    display_name = serializers.CharField(required=False)
+    display_name = serializers.CharField(required=True)
 
     average_rating = serializers.SerializerMethodField()
     
@@ -37,6 +37,7 @@ class UserSerializer(serializers.ModelSerializer):
             username=validated_data['username'],
             first_name=validated_data['first_name'],
             last_name=validated_data['last_name'],
+            display_name=validated_data['display_name'],
         )
         user.set_password(validated_data['password'])
         user.save()
