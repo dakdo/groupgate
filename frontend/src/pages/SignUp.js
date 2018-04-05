@@ -14,7 +14,6 @@ const SignUp = (props) => {
   return (
      <div className="signup-page">
        <SignUpPage {...props} />
-       // <LoginForm {...props}/>
     </div>
   )
 }
