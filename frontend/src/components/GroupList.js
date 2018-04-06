@@ -38,7 +38,7 @@ export default class ProjectGroup extends Component {
 	componentDidMount() {
     this.getGroups();
   }
-  //---------------------------------------------------------------------------
+
 	getGroups(){
 		// GET LIST OF MY GROUPS
 		if(this.props.myGroups){
@@ -55,7 +55,7 @@ export default class ProjectGroup extends Component {
 		    })
 		}	// GET LIST OF OTHER GROUPS
 		else{
-			axios.get(`${url}`, this.getAxiosHeaders())
+			axios.get(`${url}`, this.getAxiosHeaders())											// need to FIX to exclude groups of current user and theoretically DB admin
 			.then(response => {
 				this.setState( {groups: response.data}, () => {
 				console.log("GL-> other groups: ", this.state.groups)
@@ -72,7 +72,7 @@ export default class ProjectGroup extends Component {
 						id: this.nextId(),
 						name: text,
 						course: text,
-	          			// status: "Open",
+	          // status: "Open",
 	          description: text,
 						members: []
 					}
@@ -87,34 +87,39 @@ export default class ProjectGroup extends Component {
 		return this.uniqueId++
 	}
 	//---------------------------------------------------------------------------
-	update(newGroupName, newCourseNumber, newStatus, newDescription, i, addMode) {
+	// TODO: add status property in /api/groups/
+	update(newGroupName, newCourseNumber, newDescription, i, addMode) {
+			console.log('GL->addMode: ', addMode)
 
-			if ( addMode ){																														// update group
+			if ( addMode ){
 				var userId = Number(this.props.access.user_id)
 				var dataPackage = {
 					name: newGroupName,
 					course: newCourseNumber,
 					description: newDescription,
-					members: [],
-					owner: userId
+					members: []
 				}
 
-				axios.post(`http://localhost:8000/api/groups/`,
+				axios.post(`http://localhost:8000/api/groups/`,					//ADD GROUP
 					dataPackage, this.getAxiosHeaders()
 				).then(response => {}).catch(err => console.log(err));
 
 			}else {
-				axios.request({
-					method:'patch',
-					url:`http://localhost:8000/api/groups/${i}`,
-					data: {
-						name: newGroupName,
-						description: newDescription,
-						//status: newStatus,
-						course: newCourseNumber																				// items will need to be udpated when adding/removing members enabled
-					}
-				}).then(response => {
-				}).catch(err => console.log(err));
+				console.log('addMode: ', addMode)
+
+				var dataPackage = {
+					name: newGroupName,
+					course: newCourseNumber,
+					description: newDescription,
+					members: []
+				}
+
+
+				axios.patch(`http://localhost:8000/api/groups/${i}/`,					//UPDATE GROUP
+					dataPackage, this.getAxiosHeaders()
+				).then(response => {}).catch(err => console.log(err));
+
+
 			}
 
 			this.setState(prevState => ({
@@ -132,7 +137,7 @@ export default class ProjectGroup extends Component {
 	//---------------------------------------------------------------------------
 	remove(id) {
 		console.log('removing item at', id)																					// DEBUG
-		axios.delete(`http://localhost:8000/api/groups/${id}`)
+		axios.delete(`http://localhost:8000/api/groups/${id}`, this.getAxiosHeaders() )
 				.then(response => {
 					this.setState( {
 						}, () => {

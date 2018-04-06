@@ -43,9 +43,8 @@ export default class Group extends Component {
 
 	save(e) {
 		e.preventDefault()
-		this.props.onChange(this._newGroupName.value, this._newCourseNumber.value,
-												this._newStatus.value, this._newDescription.value,
-												this.props.index, this.state.adding)
+		console.log('Group, adding flag: ', this.state.adding)
+		this.props.onChange(this._newGroupName.value, this._newCourseNumber.value, this._newDescription.value, this.props.index, this.state.adding)
 		this.setState({
 			editing: false
 		})
