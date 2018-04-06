@@ -74,6 +74,21 @@ class InviteView(mixins.CreateModelMixin,
     queryset = models.Invite.objects.all()
     serializer_class = InviteSerializer
 
+    def get_queryset(self):
+        """
+        Optionally restricts the returned purchases to a given user,
+        by filtering against a `username` query parameter in the URL.
+        """
+        queryset = models.Invite.objects.all()
+        from_user = self.request.query_params.get('from_user', None)
+        if from_user is not None:
+            queryset = queryset.filter(from_user=from_user)
+        
+        to_user = self.request.query_params.get('to_user', None)
+        if to_user is not None:
+            queryset = queryset.filter(to_user=to_user)
+        return queryset
+
 class InviteResponseView(APIView):
     serializer_class = InviteResponseSerializer
 

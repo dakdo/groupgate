@@ -1,6 +1,7 @@
 # Created by https://www.gitignore.io
 
 .vscode/
+db.sqlite3-journal
 
 ### OSX ###
 .DS_Store
