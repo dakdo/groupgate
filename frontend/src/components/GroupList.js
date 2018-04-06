@@ -10,7 +10,6 @@ export default class ProjectGroup extends Component {
 	constructor(props){
     super(props);
     this.state = {
-			userId: this.props.userId,
 			adding: false,
 			groups: [],
 			addButtonDisabled: false
@@ -23,9 +22,10 @@ export default class ProjectGroup extends Component {
 		this.onCancel = this.onCancel.bind(this)
 		this.getGroups = this.getGroups.bind(this)
 		this.myGroupsButton = this.myGroupsButton.bind(this)
+		//this.displayGroups = this.displayGroups.bind(this)
 		this.getAxiosHeaders = this.getAxiosHeaders.bind(this)
 	}
-
+	//---------------------------------------------------------------------------
 	getAxiosHeaders(){
 		return{
 			headers: {
@@ -40,48 +40,30 @@ export default class ProjectGroup extends Component {
   }
 
 	getGroups(){
-		console.log("GL-> myGroups: ", this.props.myGroups)
-
-		let axiosConfig = {
-      headers: {
-        'Content-Type' : `application/json`,
-        Authorization: `JWT ${this.props.access.token}`
-      }
-    }
-
+		// GET LIST OF MY GROUPS
 		if(this.props.myGroups){
-			axios.get(`${url}`)						// NEED to fin tune the query, currently getting all records
-			.then(response => {
-				this.setState( {
-					groups: response.data,
-					}, () => {
-					console.log('GL-> populate groups, data:', response.data);
-				})
-			})
-																													// if props. flag = true, get my groups
-		/*
-			axios.get(`${url}`, axiosConfig )
-			.then(response => {
-				this.setState( {
-					groups: response.data,
-					}, () => {
-					console.log("GL -> state after APi request: ", this.state);
-				})
-			})
-	*/
 
-		}
+		  axios.get( `http://localhost:8000/api/groups/?owner=${this.props.access.user_id}`,
+									this.getAxiosHeaders() )
+		    .then(response => {
+        this.setState( {
+
+		          groups: response.data
+						}, () => { console.log('response.data: ', response.data)
+											{console.log('state.groups', this.state.groups)}
+		        })
+		    })
+		}	// GET LIST OF OTHER GROUPS
 		else{
-			axios.get(`${url}?filter={"where":{"group_owner":{"neq":"${this.props.userId}"}}}`)
+			axios.get(`${url}`, this.getAxiosHeaders())											// need to FIX to exclude groups of current user and theoretically DB admin
 			.then(response => {
 				this.setState( {groups: response.data}, () => {
-				console.log(this.state)
+				console.log("GL-> other groups: ", this.state.groups)
 				})
 			})
 		}
   }
-
-
+  //---------------------------------------------------------------------------
 	add(text) {
 		this.setState(prevState => ({
 			groups: [
@@ -90,7 +72,7 @@ export default class ProjectGroup extends Component {
 						id: this.nextId(),
 						name: text,
 						course: text,
-	          			// status: "Open",
+	          // status: "Open",
 	          description: text,
 						members: []
 					}
@@ -98,41 +80,46 @@ export default class ProjectGroup extends Component {
 			}))
 			this.setState({adding: true})
 			this.setState({ addButtonDisabled: true })
-		}
+	}
+	//---------------------------------------------------------------------------
+	nextId() {
+		this.uniqueId = this.uniqueId || 0
+		return this.uniqueId++
+	}
+	//---------------------------------------------------------------------------
+	// TODO: add status property in /api/groups/
+	update(newGroupName, newCourseNumber, newDescription, i, addMode) {
+			console.log('GL->addMode: ', addMode)
 
-		nextId() {
-			this.uniqueId = this.uniqueId || 0
-			return this.uniqueId++
-		}
-
-		update(newGroupName, newCourseNumber, newStatus, newDescription, i, addMode) {
-
-			if ( addMode ){																														// update group
+			if ( addMode ){
 				var userId = Number(this.props.access.user_id)
 				var dataPackage = {
 					name: newGroupName,
 					course: newCourseNumber,
 					description: newDescription,
-					members: [],
-					owner: userId
+					members: []
 				}
 
-				axios.post(`http://localhost:8000/api/groups/`,
+				axios.post(`http://localhost:8000/api/groups/`,					//ADD GROUP
 					dataPackage, this.getAxiosHeaders()
 				).then(response => {}).catch(err => console.log(err));
 
 			}else {
-				axios.request({
-					method:'patch',
-					url:`http://localhost:8000/api/groups/${i}`,
-					data: {
-						name: newGroupName,
-						description: newDescription,
-						//status: newStatus,
-						course: newCourseNumber																				// items will need to be udpated when adding/removing members enabled
-					}
-				}).then(response => {
-				}).catch(err => console.log(err));
+				console.log('addMode: ', addMode)
+
+				var dataPackage = {
+					name: newGroupName,
+					course: newCourseNumber,
+					description: newDescription,
+					members: []
+				}
+
+
+				axios.patch(`http://localhost:8000/api/groups/${i}/`,					//UPDATE GROUP
+					dataPackage, this.getAxiosHeaders()
+				).then(response => {}).catch(err => console.log(err));
+
+
 			}
 
 			this.setState(prevState => ({
@@ -142,15 +129,15 @@ export default class ProjectGroup extends Component {
 			}))
 
 			this.setState({ addButtonDisabled: false })
-		}
-
-		onCancel( newState ){
-			this.setState({ addButtonDisabled: newState })
-		}
-
-		remove(id) {
-			console.log('removing item at', id)																					// DEBUG
-			axios.delete(`http://localhost:8000/api/groups/${id}`)
+	}
+	//---------------------------------------------------------------------------
+	onCancel( newState ){
+		this.setState({ addButtonDisabled: newState })
+	}
+	//---------------------------------------------------------------------------
+	remove(id) {
+		console.log('removing item at', id)																					// DEBUG
+		axios.delete(`http://localhost:8000/api/groups/${id}`, this.getAxiosHeaders() )
 				.then(response => {
 					this.setState( {
 						}, () => {
@@ -162,9 +149,8 @@ export default class ProjectGroup extends Component {
 				groups: prevState.groups.filter(group => group.id !== id)
 			}))
 		}
-
-		eachGroup(group, i) {
-			console.log("GL -> goup members at i: ", i,  group.members)
+	//---------------------------------------------------------------------------
+	eachGroup(group, i) {
 			return (
 				<Group key={group.id}
 					  index={group.id} groupName={group.name} courseNumber={group.course} /*status={group.status} */
@@ -172,9 +158,9 @@ export default class ProjectGroup extends Component {
 						onCancel={this.onCancel} onChange={this.update} onRemove={this.remove} myGroups={this.props.myGroups}>
 			  </Group>
 			)
-		}
-
-		myGroupsButton(){
+	}
+	//---------------------------------------------------------------------------
+	myGroupsButton(){
 				if( this.props.myGroups ){
 					return (
 						<span>
@@ -183,17 +169,28 @@ export default class ProjectGroup extends Component {
 						</span>
 					)
 				}
+	}
+/*
+		displayGroups(){
+			if( this.state.groups.length > 0 ){
+				return(
+					<span>{this.state.groups.map(this.eachGroup) }</span>
+				)
+			}
 		}
 
-		render() {
-			return (
+			{this.displayGroups()} {this.state.groups.map(this.eachGroup) }
+
+*/
+	//---------------------------------------------------------------------------
+	render() {
+			console.log('GL->state.groups before render:', this.state.groups)
+			return(
 				<div className="board">
 				{this.myGroupsButton()}
-				{this.state.groups.map(this.eachGroup)}
+				{this.state.groups.map(this.eachGroup) }
 
 				</div>
 			)
-		}
 	}
-
-	//
+}

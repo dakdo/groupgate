@@ -43,9 +43,8 @@ export default class Group extends Component {
 
 	save(e) {
 		e.preventDefault()
-		this.props.onChange(this._newGroupName.value, this._newCourseNumber.value,
-												this._newStatus.value, this._newDescription.value,
-												this.props.index, this.state.adding)
+		console.log('Group, adding flag: ', this.state.adding)
+		this.props.onChange(this._newGroupName.value, this._newCourseNumber.value, this._newDescription.value, this.props.index, this.state.adding)
 		this.setState({
 			editing: false
 		})
@@ -85,13 +84,7 @@ export default class Group extends Component {
   							  defaultValue={this.props.courseNumber}/>
   					</div>
 
-    					{"Status:"}
-    					<div className="five wide field">
-							<select value={this.state.select_value} ref={input=> this._newStatus = input} onChange={this.handleChange}>
-								<option value="Open">Open</option>
-								<option value="Closed">Closed</option>
-							</select>
-    					</div>
+
 
       					{"Description:"}
       					<div className="ten wide field">
@@ -122,9 +115,6 @@ displayButtons(){
 
 
 	renderDisplay() {
-
-
-
 		return (
       <table className="ui single line basic table">
         <thead>
@@ -139,14 +129,16 @@ displayButtons(){
           <tr>
             <td>{this.props.groupName}</td>
             <td>{this.props.courseNumber}</td>
-            <td>{this.props.status}</td>
+
             <td>{this.props.description}</td>
           </tr>
 					<tr>
-						<td>{"Group Members: "}{this.props.members.map((name,i)=>{
-							return name + " ";
-						})}
-</td>
+							{console.log('Group.js, members:', this.props.members)}
+						<td>{"Group Members: "} {this.props.members.map( ( member,i)=>{
+														return member.user_display_name + " ";
+														})}
+					  </td>
+
 					</tr>
           <tr>
             <td colSpan="4">
