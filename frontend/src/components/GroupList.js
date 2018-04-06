@@ -10,7 +10,6 @@ export default class ProjectGroup extends Component {
 	constructor(props){
     super(props);
     this.state = {
-			userId: this.props.userId,
 			adding: false,
 			groups: [],
 			addButtonDisabled: false
@@ -26,7 +25,7 @@ export default class ProjectGroup extends Component {
 		//this.displayGroups = this.displayGroups.bind(this)
 		this.getAxiosHeaders = this.getAxiosHeaders.bind(this)
 	}
-
+	//---------------------------------------------------------------------------
 	getAxiosHeaders(){
 		return{
 			headers: {
@@ -39,43 +38,32 @@ export default class ProjectGroup extends Component {
 	componentDidMount() {
     this.getGroups();
   }
-
+  //---------------------------------------------------------------------------
 	getGroups(){
-		console.log("GL-> myGroups: ", this.props.myGroups)
-
-		let axiosConfig = {
-      headers: {
-        'Content-Type' : `application/json`,
-        Authorization: `JWT ${this.props.access.token}`
-      }
-    }
-
-		// GET LIST OF MY GROUPS  - REPLACE WITH CALL TO groups
+		// GET LIST OF MY GROUPS
 		if(this.props.myGroups){
-/*
-			axios.get( `http://localhost:8000/api/groups?owner_id=${this.props.access.user_id}/`,
-			this.getAxiosHeaders() )
-	      .then(response => {
-	        this.setState( {
-	          id: response.data.id,
-	          groups: response.data.groups,
-	          }, () => {
-	        })
-	      })
-*/
 
+		  axios.get( `http://localhost:8000/api/groups/?owner=${this.props.access.user_id}`,
+									this.getAxiosHeaders() )
+		    .then(response => {
+        this.setState( {
 
-}				// GET LIST OF OTHER GROUPS
+		          groups: response.data
+						}, () => { console.log('response.data: ', response.data)
+											{console.log('state.groups', this.state.groups)}
+		        })
+		    })
+		}	// GET LIST OF OTHER GROUPS
 		else{
 			axios.get(`${url}`, this.getAxiosHeaders())
 			.then(response => {
 				this.setState( {groups: response.data}, () => {
-				console.log(this.state)
+				console.log("GL-> other groups: ", this.state.groups)
 				})
 			})
 		}
   }
-
+  //---------------------------------------------------------------------------
 	add(text) {
 		this.setState(prevState => ({
 			groups: [
@@ -92,14 +80,14 @@ export default class ProjectGroup extends Component {
 			}))
 			this.setState({adding: true})
 			this.setState({ addButtonDisabled: true })
-		}
-
-		nextId() {
-			this.uniqueId = this.uniqueId || 0
-			return this.uniqueId++
-		}
-
-		update(newGroupName, newCourseNumber, newStatus, newDescription, i, addMode) {
+	}
+	//---------------------------------------------------------------------------
+	nextId() {
+		this.uniqueId = this.uniqueId || 0
+		return this.uniqueId++
+	}
+	//---------------------------------------------------------------------------
+	update(newGroupName, newCourseNumber, newStatus, newDescription, i, addMode) {
 
 			if ( addMode ){																														// update group
 				var userId = Number(this.props.access.user_id)
@@ -136,15 +124,15 @@ export default class ProjectGroup extends Component {
 			}))
 
 			this.setState({ addButtonDisabled: false })
-		}
-
-		onCancel( newState ){
-			this.setState({ addButtonDisabled: newState })
-		}
-
-		remove(id) {
-			console.log('removing item at', id)																					// DEBUG
-			axios.delete(`http://localhost:8000/api/groups/${id}`)
+	}
+	//---------------------------------------------------------------------------
+	onCancel( newState ){
+		this.setState({ addButtonDisabled: newState })
+	}
+	//---------------------------------------------------------------------------
+	remove(id) {
+		console.log('removing item at', id)																					// DEBUG
+		axios.delete(`http://localhost:8000/api/groups/${id}`)
 				.then(response => {
 					this.setState( {
 						}, () => {
@@ -156,9 +144,8 @@ export default class ProjectGroup extends Component {
 				groups: prevState.groups.filter(group => group.id !== id)
 			}))
 		}
-
-		eachGroup(group, i) {
-			console.log("GL -> goup members at i: ", i,  group.members)
+	//---------------------------------------------------------------------------
+	eachGroup(group, i) {
 			return (
 				<Group key={group.id}
 					  index={group.id} groupName={group.name} courseNumber={group.course} /*status={group.status} */
@@ -166,9 +153,9 @@ export default class ProjectGroup extends Component {
 						onCancel={this.onCancel} onChange={this.update} onRemove={this.remove} myGroups={this.props.myGroups}>
 			  </Group>
 			)
-		}
-
-		myGroupsButton(){
+	}
+	//---------------------------------------------------------------------------
+	myGroupsButton(){
 				if( this.props.myGroups ){
 					return (
 						<span>
@@ -177,7 +164,7 @@ export default class ProjectGroup extends Component {
 						</span>
 					)
 				}
-		}
+	}
 /*
 		displayGroups(){
 			if( this.state.groups.length > 0 ){
@@ -187,13 +174,18 @@ export default class ProjectGroup extends Component {
 			}
 		}
 
-			{this.displayGroups()}
+			{this.displayGroups()} {this.state.groups.map(this.eachGroup) }
+
 */
-		render() {
+	//---------------------------------------------------------------------------
+	render() {
+			console.log('GL->state.groups before render:', this.state.groups)
 			return(
 				<div className="board">
+				{this.myGroupsButton()}
 				{this.state.groups.map(this.eachGroup) }
+
 				</div>
 			)
-		}
 	}
+}

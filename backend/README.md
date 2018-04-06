@@ -54,7 +54,7 @@ Create a group with existing users with an assigned role.
     "name": "x",
     "description": "x",
     "course":"CMPT470",
-    "members": [{"user":1, "role":"dev"},{"user":2, "role":"dev"}],
+    "members": [{"user_id":1, "user_role":"dev"},{"user_id":2, "user_role":"dev"}],
     "owner": "3"
 }
 ```
