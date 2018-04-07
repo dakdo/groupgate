@@ -6,10 +6,15 @@ from rest_framework.decorators import detail_route
 from rest_framework.response import Response
 from groups import permissions
 from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly, AllowAny
-
+from django_filters import rest_framework as filters
 from django.http import Http404
 from rest_framework.views import APIView
 UserModel = get_user_model()
+
+class CourseFilter(filters.FilterSet):
+    class Meta:
+        model = models.Course
+        fields = ('name', 'term', 'year')
 
 class UserViewSet(viewsets.ModelViewSet):
     queryset = UserModel.objects.all()
@@ -133,3 +138,4 @@ class InviteResponseView(APIView):
 class CourseViewSet(viewsets.ModelViewSet):
     queryset = models.Course.objects.all()
     serializer_class = CourseSerializer
+    filter_class = CourseFilter
