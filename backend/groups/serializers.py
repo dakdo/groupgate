@@ -5,6 +5,12 @@ from django.db.models import Avg
 
 UserModel = get_user_model()
 
+class CourseSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        fields = ('id', 'name', 'term', 'year')
+        model = models.Course
+      
 class MembershipSerializer(serializers.ModelSerializer):
 
     group_name = serializers.ReadOnlyField(source='group_id.name')
@@ -22,6 +28,12 @@ class UserSerializer(serializers.ModelSerializer):
     groups = MembershipSerializer(source='membership_set', many=True)
     display_name = serializers.CharField(required=True)
 
+    # courses = serializers.PrimaryKeyRelatedField(many=True, queryset=models.Course.objects.all())
+    courses = serializers.PrimaryKeyRelatedField(many=True, read_only=False, queryset=models.Course.objects.all())
+
+    # courses = CourseSerializer(source='course_set', many=True)
+
+
     average_rating = serializers.SerializerMethodField()
     
     def get_average_rating(self, obj):
@@ -32,7 +44,9 @@ class UserSerializer(serializers.ModelSerializer):
         return average_rating
 
     def create(self, validated_data):
-
+        # courses = validated_data['courses']
+        courses = validated_data.pop('courses')
+        
         user = UserModel.objects.create(
             username=validated_data['username'],
             first_name=validated_data['first_name'],
@@ -40,13 +54,16 @@ class UserSerializer(serializers.ModelSerializer):
             display_name=validated_data['display_name'],
         )
         user.set_password(validated_data['password'])
+        for c in courses:
+            # course_info = models.Course.objects.all().filter(pk=c.id)
+            user.courses.add(c)
         user.save()
 
         return user
 
     class Meta:
         model = UserModel
-        fields = ('id', 'username', 'password', 'first_name', 'last_name', 'display_name', 'groups', 'average_rating', 'about_me')
+        fields = ('id', 'username', 'password', 'first_name', 'last_name', 'display_name', 'groups', 'average_rating', 'about_me', 'courses')
 
 class GroupCreateSerializer(serializers.ModelSerializer):
 
@@ -104,3 +121,5 @@ class InviteSerializer(serializers.ModelSerializer):
 class InviteResponseSerializer(serializers.Serializer):
 
     response = serializers.BooleanField(required=True)
+
+

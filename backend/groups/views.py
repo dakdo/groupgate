@@ -1,6 +1,6 @@
 from rest_framework import viewsets, generics, status, mixins
 from groups import models
-from .serializers import UserSerializer, GroupCreateSerializer, RatingSerializer, InviteResponseSerializer, InviteSerializer
+from .serializers import UserSerializer, GroupCreateSerializer, RatingSerializer, InviteResponseSerializer, InviteSerializer, CourseSerializer
 from django.contrib.auth import get_user_model
 from rest_framework.decorators import detail_route
 from rest_framework.response import Response
@@ -129,3 +129,7 @@ class InviteResponseView(APIView):
                 return Response({'success': "Invite declined"}, status=status.HTTP_200_OK)
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class CourseViewSet(viewsets.ModelViewSet):
+    queryset = models.Course.objects.all()
+    serializer_class = CourseSerializer
