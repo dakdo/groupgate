@@ -2,11 +2,13 @@
 
 ## Users
 
-/api/users/
-
 'groups' field is meant to be left blank and added in after.
 
 'courses' field is a list of pk's of the Course model (/api/courses/)
+
+```
+/api/users/
+```
 
 ```json
 {
@@ -25,7 +27,9 @@
 
 Filters users with course ID of 2
 
+```
 GET /api/users/?course=2
+```
 
 ### User authentication
 
@@ -33,7 +37,9 @@ This generates a JWT token or refreshes it. Use in the format:
 
 JWT <token>
 
-api/auth/token/obtain/  OR   api/auth/token/refresh/
+```
+api/auth/token/obtain/
+```
 
 ```json
 {
@@ -46,7 +52,9 @@ api/auth/token/obtain/  OR   api/auth/token/refresh/
 
 Rate a user with an integer value (will update to 5-star rating).
 
+```
 /api/ratings/
+```
 
 ```json
 {
@@ -59,7 +67,9 @@ Rate a user with an integer value (will update to 5-star rating).
 
 Create a group with existing users with an assigned role.
 
+```
 /api/groups/
+```
 
 ```json
 {
@@ -75,23 +85,25 @@ Create a group with existing users with an assigned role.
 
 Filters groups with course with CMPT470
 
-GET
-/api/groups/?course=CMPT470
-
+```
+GET /api/groups/?course=CMPT470
+```
 
 ### Filter groups by owner
 
 Filter groups with owner id of 4
 
-GET
-/api/groups/?owner=4
-
+```
+GET /api/groups/?owner=4
+```
 
 ## Invites
 
 Allow a user to invite another to a group. The invite response is handled on another endpoint below.
 
+```
 /api/invites/
+```
 
 ```json
 {
@@ -114,7 +126,9 @@ Updates are not allowed
 
 Accept or decline an invite.
 
+```
 /api/invites/<id>/response/
+```
 
 ```json
 {
@@ -132,12 +146,17 @@ This endpoint is meant for an admin to regulate the courses available.
 
 Values must be capitalized.
 
+```
+/api/courses/
+```
+
 ```json
 {
     "name": "CMPT470",
     "term": SPRING,
     "year": "2018"
 }
+```
 
 ### Filtering courses
 
@@ -145,7 +164,9 @@ Multi-field filtering is available for any course field.
 
 Filter courses for the Spring 2018 term.
 
+```
 GET /api/courses/?term=SPRING&year=2018
+```
 
 ## How to use
 
