@@ -29,6 +29,9 @@ class UserSerializer(serializers.ModelSerializer):
     display_name = serializers.CharField(required=True)
 
     # courses = serializers.PrimaryKeyRelatedField(many=True, queryset=models.Course.objects.all())
+    courses = serializers.PrimaryKeyRelatedField(many=True, read_only=False, queryset=models.Course.objects.all())
+
+    # courses = CourseSerializer(source='course_set', many=True)
 
 
     average_rating = serializers.SerializerMethodField()
@@ -41,6 +44,9 @@ class UserSerializer(serializers.ModelSerializer):
         return average_rating
 
     def create(self, validated_data):
+        # courses = validated_data['courses']
+        courses = validated_data.pop('courses')
+        
         user = UserModel.objects.create(
             username=validated_data['username'],
             first_name=validated_data['first_name'],
@@ -48,6 +54,9 @@ class UserSerializer(serializers.ModelSerializer):
             display_name=validated_data['display_name'],
         )
         user.set_password(validated_data['password'])
+        for c in courses:
+            # course_info = models.Course.objects.all().filter(pk=c.id)
+            user.courses.add(c)
         user.save()
 
         return user
