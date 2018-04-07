@@ -21,6 +21,15 @@ class UserViewSet(viewsets.ModelViewSet):
     serializer_class = UserSerializer
     permission_classes = (AllowAny,)
 
+    def get_queryset(self):
+
+        queryset = models.CustomUser.objects.all()
+        course = self.request.query_params.get('course', None)
+        # strings = ['keith', 's', 'thompson']
+        if course is not None:
+            queryset = queryset.filter(courses__in=course)
+        return queryset
+
 
 class GroupViewSet(viewsets.ModelViewSet):
     queryset = models.Group.objects.all()
