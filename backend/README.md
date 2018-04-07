@@ -4,16 +4,28 @@
 
 /api/users/
 
+'groups' field is meant to be left blank and added in after.
+
+'courses' field is a list of pk's of the Course model (/api/courses/)
+
 ```json
 {
-    "username": "",
-    "password": "",
-    "first_name": "",
-    "last_name": "",
-    "display_name": "",
+    "username": "jello",
+    "password": "hello",
+    "first_name": "Jelly",
+    "last_name": "Belly",
+    "display_name": "Mello",
     "groups": []
+    "about_me": "Jell-o",
+    "courses": [1,2]
 }
 ```
+
+### Filter users by course
+
+Filters users with course ID of 2
+
+GET /api/users/?course=2
 
 ### User authentication
 
@@ -114,6 +126,26 @@ POST only
 
 This should be displayed for the user after the invite is sent out using the previous endpoint.
 
+## Courses
+
+This endpoint is meant for an admin to regulate the courses available.
+
+Values must be capitalized.
+
+```json
+{
+    "name": "CMPT470",
+    "term": SPRING,
+    "year": "2018"
+}
+
+### Filtering courses
+
+Multi-field filtering is available for any course field.
+
+Filter courses for the Spring 2018 term.
+
+GET /api/courses/?term=SPRING&year=2018
 
 ## How to use
 
