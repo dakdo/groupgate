@@ -67,6 +67,8 @@ Rate a user with an integer value (will update to 5-star rating).
 
 Create a group with existing users with an assigned role.
 
+User ID given for 'owner' field will automatically be added as a member.
+
 ```
 /api/groups/
 ```
@@ -76,7 +78,10 @@ Create a group with existing users with an assigned role.
     "name": "x",
     "description": "x",
     "course":"CMPT470",
-    "members": [{"user_id":1, "user_role":"dev"},{"user_id":2, "user_role":"dev"}],
+    "members": [
+        {"user_id":1, "user_role":"dev"},
+        {"user_id":2, "user_role":"dev"}
+    ],
     "owner": "3"
 }
 ```
@@ -153,7 +158,7 @@ Values must be capitalized.
 ```json
 {
     "name": "CMPT470",
-    "term": SPRING,
+    "term": "SPRING",
     "year": "2018"
 }
 ```
