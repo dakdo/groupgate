@@ -17,7 +17,7 @@
     "first_name": "Jelly",
     "last_name": "Belly",
     "display_name": "Mello",
-    "groups": []
+    "groups": [],
     "about_me": "Jell-o",
     "courses": [1,2]
 }
@@ -58,7 +58,7 @@ Rate a user with an integer value (will update to 5-star rating).
 
 ```json
 {
-    "user":1
+    "user":1,
     "rating":3
 }
 ```
