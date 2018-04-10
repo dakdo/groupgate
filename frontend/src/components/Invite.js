@@ -46,18 +46,27 @@ export default class InviteForm extends Component {
   
     handleSubmit(event) {
       alert('Your favorite flavor is: ' + this.state.value);
+      this.sendInvite(this.props.user,this.state.value)
       event.preventDefault();
     }
   
+    createSelectItems(options) {
+        let items = []    
+        for (let i = 0; i < options.length; i++) {           
+            console.log(options[i])
+  
+             items.push(<option value={options[i]}>{options[i]}</option>);   
+             //here I will be creating my options dynamically based on
+             //what props are currently passed to the parent component
+        }
+        return items;
+    }  
+
     render() {
       return (
-        <form onSubmit={this.sendInvite(this.props.user,this.state.value)}>
-            {/* <Dropdown options={options} onChange={this._onSelect} value={defaultOption} placeholder="Select a group" /> */}
+        <form onSubmit={this.handleSubmit}>
             <select value={this.state.value} onChange={this.handleChange}>
-                <option value="3">3</option>
-                <option value="7">7</option>
-                <option value="12">12</option>
-                <option value="11">11</option>
+                {this.createSelectItems(this.props.options)}
             </select>
           <input type="submit" value="Submit" />
         </form>
