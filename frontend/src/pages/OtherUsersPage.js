@@ -6,6 +6,7 @@ import { Button } from "semantic-ui-react";
 //import OtherUser from '../components/OtherUser';
 import Dropdown from 'react-dropdown'
 import 'react-dropdown/style.css'
+import InviteForm from '../components/Invite';
 
 const baseUrl = "http://localhost:8000/api";
 export default class OtherUsers extends Component {
@@ -17,7 +18,6 @@ export default class OtherUsers extends Component {
       myinfo: {}
     };
     this.getOtherUsers = this.getOtherUsers.bind(this);
-    this.sendInvite = this.sendInvite.bind(this);
     this.getAxiosHeaders = this.getAxiosHeaders.bind(this)
     this.getMyInfo = this.getMyInfo.bind(this);
   }
@@ -55,35 +55,7 @@ export default class OtherUsers extends Component {
       })
   }
 
-  //TODO: should have a prop already containing user groups. Need a way to select a group
-  sendInvite(user, group) {
-    if (this.state.myinfo.groups == null || this.state.myinfo.groups.length< 1) {
-      alert("You currently don't belong to any group!");
-      return;
-    }
-    var data = {
-      from_user: this.props.access.user_id,
-      to_user: user.id,
-      group: 3,
-      status:0
-       };
-  //    var instance = axios.create({
-  //       baseURL: "http://localhost:8000/api/",
-  //       headers: {'Access-Control-Allow-Headers': 'Authorization',
-  //                 'Authorization': `JWT ${this.props.access.token}`}
-  //    });
 
-  //  instance.post('invites/',data)
-  //  .then(response => {
-  //   alert("invited user to your first group")
-  //   }).catch(err => console.log(err));
-  console.log(data)
-  axios.post(
-    `http://localhost:8000/api/invites/`,
-    data, this.getAxiosHeaders()
-  ).then(response => {}).catch(err => console.log(err));
-
-  }
 
   ratingRender(user){
     if (user.num_of_votes>0){
@@ -96,12 +68,14 @@ export default class OtherUsers extends Component {
   
   render() {
     var options = []
+    var defaultOption = 0
     const group_info = this.state.myinfo.groups
     if(typeof group_info!=="undefined") {
       if(group_info.length > 0) {
         for (var i=0; i < group_info.length; i++){
           options.push(group_info[i].group_id)
         }
+        defaultOption = options[0]
         console.log(options)
       }
     }
@@ -131,9 +105,7 @@ export default class OtherUsers extends Component {
                     <td><Link to={`/otherUsers/${user.id}`} >{user.username}</Link></td>
                     {this.ratingRender(user)}
                     <td>{user.num_of_votes}</td>
-                    <td><Dropdown options={options} onChange={this._onSelect} placeholder="Select a group" /></td>
-                    
-                    <td><Button basic color="blue" onClick={()=>this.sendInvite(user,this.value)}>Invite</Button></td>
+                    <td><InviteForm access={this.props.access} user={user}/></td>
                   </tr>
                 )
               })}
