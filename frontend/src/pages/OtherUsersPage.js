@@ -4,7 +4,8 @@ import { Link } from 'react-router-dom';
 import Nav from '../components/Nav';
 import { Button } from "semantic-ui-react";
 //import OtherUser from '../components/OtherUser';
-
+import Dropdown from 'react-dropdown'
+import 'react-dropdown/style.css'
 
 const baseUrl = "http://localhost:8000/api";
 export default class OtherUsers extends Component {
@@ -21,8 +22,8 @@ export default class OtherUsers extends Component {
     this.getMyInfo = this.getMyInfo.bind(this);
   }
   componentDidMount() {
-    this.getOtherUsers();
-    this.getMyInfo();
+    this.getMyInfo()
+    this.getOtherUsers()
   }
 
   getAxiosHeaders(){
@@ -35,15 +36,12 @@ export default class OtherUsers extends Component {
   }
 
   getMyInfo() {
-
-    axios.get(`${baseUrl}/users/`)
+    axios.get(`${baseUrl}/users/${this.props.access.user_id}/`)
       .then(response => {
         this.setState( {
-          users: response.data
+          myinfo: response.data
           })
-        console.log("OU-> get data: ", this.state)
       })
-      console.log("line 35")
   }
 
   getOtherUsers(){
@@ -58,7 +56,7 @@ export default class OtherUsers extends Component {
   }
 
   //TODO: should have a prop already containing user groups. Need a way to select a group
-  sendInvite(user) {
+  sendInvite(user, group) {
     if (this.state.myinfo.groups == null || this.state.myinfo.groups.length< 1) {
       alert("You currently don't belong to any group!");
       return;
@@ -66,19 +64,25 @@ export default class OtherUsers extends Component {
     var data = {
       from_user: this.props.access.user_id,
       to_user: user.id,
-      group: this.state.myinfo.groups[0],
+      group: 3,
       status:0
        };
-     var instance = axios.create({
-        baseURL: "http://localhost:3000/api/",
-        headers: {'Access-Control-Allow-Headers': 'Authorization',
-                  'Authorization': `JWT ${this.props.access.token}`}
-     });
+  //    var instance = axios.create({
+  //       baseURL: "http://localhost:8000/api/",
+  //       headers: {'Access-Control-Allow-Headers': 'Authorization',
+  //                 'Authorization': `JWT ${this.props.access.token}`}
+  //    });
 
-   instance.post('invites/',data)
-   .then(response => {
-    alert("invited user to your first group")
-    }).catch(err => console.log(err));
+  //  instance.post('invites/',data)
+  //  .then(response => {
+  //   alert("invited user to your first group")
+  //   }).catch(err => console.log(err));
+  console.log(data)
+  axios.post(
+    `http://localhost:8000/api/invites/`,
+    data, this.getAxiosHeaders()
+  ).then(response => {}).catch(err => console.log(err));
+
   }
 
   ratingRender(user){
@@ -89,11 +93,25 @@ export default class OtherUsers extends Component {
     }
   }
 
+  
   render() {
+    var options = []
+    const group_info = this.state.myinfo.groups
+    if(typeof group_info!=="undefined") {
+      if(group_info.length > 0) {
+        for (var i=0; i < group_info.length; i++){
+          options.push(group_info[i].group_id)
+        }
+        console.log(options)
+      }
+    }
+    // console.log("My info: " + JSON.stringify(group_info))
+
+
+    // console.log("My info: " + JSON.stringify(options))
     return (
-
+      
       <div className=" container fluid">
-
           <br/>
           <table className="ui very basic table">
             <thead>
@@ -105,13 +123,17 @@ export default class OtherUsers extends Component {
               </tr>
             </thead>
             <tbody>
+
               {this.state.users.map((user,i)=>{
+
                 return(
                   <tr key={i}>
                     <td><Link to={`/otherUsers/${user.id}`} >{user.username}</Link></td>
                     {this.ratingRender(user)}
                     <td>{user.num_of_votes}</td>
-                    <td><Button basic color="blue" onClick={()=>this.sendInvite(user)}>Invite</Button></td>
+                    <td><Dropdown options={options} onChange={this._onSelect} placeholder="Select a group" /></td>
+                    
+                    <td><Button basic color="blue" onClick={()=>this.sendInvite(user,this.value)}>Invite</Button></td>
                   </tr>
                 )
               })}
