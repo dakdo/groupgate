@@ -1,4 +1,9 @@
 import React, { Component } from 'react'
+import { Button } from "semantic-ui-react";
+import axios from 'axios';
+
+const BASE_URL = 'http://localhost:8000';
+const url= `${BASE_URL}/api/groups/`;
 
 export default class Group extends Component {
 	constructor(props) {
@@ -30,6 +35,15 @@ export default class Group extends Component {
 		}
 	}
 
+	getAxiosHeaders(){
+		return{
+			headers: {
+				'Content-Type' : `application/json`,
+				Authorization: `JWT ${this.props.access.token}`
+			}
+		}
+	}
+
 	edit() {
 		this.setState({
 			editing: true,
@@ -49,6 +63,23 @@ export default class Group extends Component {
 			editing: false
 		})
 		this.setState({adding: false})
+	}
+
+	displayMembers(members) {
+		const members_now = members.map((member) => 
+			<li>Name: {member.user_display_name} | Role: {member.user_role}</li>
+		)
+		return members_now
+	}
+	updateMembers(members) {
+		
+		var data = {
+			members: []
+		}
+
+		axios.patch(`http://localhost:8000/api/groups/${this.props.index}/`,					//UPDATE GROUP
+			data, this.getAxiosHeaders()
+		).then(response => {}).catch(err => console.log(err));
 	}
 
 	cancel = (e) => {
@@ -133,12 +164,9 @@ displayButtons(){
             <td>{this.props.description}</td>
           </tr>
 					<tr>
-							{console.log('Group.js, members:', this.props.members)}
 						<td>{"Group Members: "} 
 							<ul>
-							{this.props.members.map( ( member,i)=>{
-								return <li>Name: {member.user_display_name} | Role: {member.user_role}</li>
-							})}
+								{this.displayMembers(this.props.members)}
 							</ul>
 					  </td>
 
