@@ -134,7 +134,7 @@ class InviteResponseView(APIView):
             user = self.get_user(invite.to_user.id)
 
             if response == True:
-                membership = models.Membership(user=user, group=group, role="member")
+                membership = models.Membership(user_id=user, group_id=group, user_role="member")
                 membership.save()
                 invite.accept()
                 return Response({'success': "Invite accepted"}, status=status.HTTP_200_OK)
