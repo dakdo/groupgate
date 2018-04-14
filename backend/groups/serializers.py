@@ -49,7 +49,7 @@ class UserSerializer(serializers.ModelSerializer):
     def get_invitations_sent(self, obj):
 
         invitations_sent_set = models.Invite.objects.filter(from_user=obj.id)
-        invitations_sent_list = list(invitations_sent_set.values('to_user'))
+        invitations_sent_list = list(invitations_sent_set.values('to_user', 'group'))
         invitations_sent = []
         for i in invitations_sent_list:
             print(i["to_user"])
@@ -57,21 +57,20 @@ class UserSerializer(serializers.ModelSerializer):
 
         if invitations_sent is None:
             return 0
-        return invitations_sent
+        return invitations_sent_list
 
     def get_invitations_received(self, obj):
 
         invitations_received_set = models.Invite.objects.filter(to_user=obj.id)
-        invitations_received_list = list(invitations_received_set.values('from_user', 'status'))
+        invitations_received_list = list(invitations_received_set.values('from_user', 'group', 'status'))
         invitations_received = []
         for i in invitations_received_list:
-            print(i["from_user"])
-            if i["status"] == 0:
-                invitations_received.append(i["from_user"])
+            if i["status"] != 0:
+                invitations_received_list.remove(i)
 
         if invitations_received is None:
             return 0
-        return invitations_received
+        return invitations_received_list
 
     def create(self, validated_data):
         # courses = validated_data['courses']
