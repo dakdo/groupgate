@@ -49,7 +49,7 @@ class UserSerializer(serializers.ModelSerializer):
     def get_invitations_sent(self, obj):
 
         invitations_sent_set = models.Invite.objects.filter(from_user=obj.id)
-        invitations_sent_list = list(invitations_sent_set.values('id', 'to_user', 'group'))
+        invitations_sent_list = list(invitations_sent_set.values('id', 'status', 'to_user', 'group'))
         invitations_sent = []
         for i in invitations_sent_list:
             print(i["to_user"])

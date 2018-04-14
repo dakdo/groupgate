@@ -106,9 +106,11 @@ export default class MyProfile extends Component {
 
               {/*Invite section*/}
               <h5 className="ui dividing header">Invitations Sent</h5>
+              <InviteList access={this.props.access} invite={this.state.invitations_sent} isSent="true"/>
 
               <h5 className="ui dividing header">Invitations Received</h5>
-              <InviteList access={this.props.access} invite={this.state.invitations_received}/>
+              <InviteList access={this.props.access} invite={this.state.invitations_received} isSent="false"/>
+
               {/*My References Section*/}
               <h5 className="ui dividing header">My Courses with Project Groups</h5>
               <CourseList userId = {this.state.id} />
