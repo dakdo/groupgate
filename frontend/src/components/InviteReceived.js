@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import axios from 'axios';
 
-export default class Group extends Component {
+export default class InviteReceived extends Component {
 	constructor(props) {
 		super(props)
 		this.ESCAPE_KEY = 27;
@@ -51,7 +51,7 @@ export default class Group extends Component {
 	render() {
 		return (
 			<div>
-					<p>Invite from {this.props.from} to join group {this.props.group}</p>
+					<p>Invite from user {this.props.from} to join group {this.props.group}</p>
 					<button className="ui primary button right floated" onClick={() => {this.sendInviteResponse(true, this.props.invite)}} id="accept">Accept</button>
 					<button className="ui red button right floated" onClick={() => {this.sendInviteResponse(false, this.props.invite)}} id="decline">Decline</button>
 			</div>

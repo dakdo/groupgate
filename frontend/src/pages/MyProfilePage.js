@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import axios from 'axios';
 import EditableField from '../components/EditableField';
 import EditableTextArea from '../components/EditableTextArea';
-import InviteReceived from '../components/InviteReceived';
+import InviteList from '../components/InviteList';
 import CourseList from '../components/CourseList'
 import ReferenceList from '../components/ReferenceList';
 import Nav from '../components/Nav';
@@ -108,7 +108,7 @@ export default class MyProfile extends Component {
               <h5 className="ui dividing header">Invitations Sent</h5>
 
               <h5 className="ui dividing header">Invitations Received</h5>
-              <InviteReceived from="1" group="11" invite="10" access={this.props.access}/>
+              <InviteList access={this.props.access} invite={this.state.invitations_received}/>
               {/*My References Section*/}
               <h5 className="ui dividing header">My Courses with Project Groups</h5>
               <CourseList userId = {this.state.id} />
