@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import axios from 'axios';
 import EditableField from '../components/EditableField';
 import EditableTextArea from '../components/EditableTextArea';
+import InviteReceived from '../components/InviteReceived';
 import CourseList from '../components/CourseList'
 import ReferenceList from '../components/ReferenceList';
 import Nav from '../components/Nav';
@@ -19,6 +20,8 @@ export default class MyProfile extends Component {
           lastName: '',
           displayName: '',
           aboutMe: '',
+          invitations_sent: [],
+          invitations_received: [],
       }
       this.update = this.update.bind(this);
       this.getAxiosHeaders = this.getAxiosHeaders.bind(this);
@@ -47,6 +50,8 @@ export default class MyProfile extends Component {
           lastName: response.data.last_name,
           displayName: response.data.display_name,
           aboutMe: response.data.about_me,
+          invitations_received: response.data.invitations_received,
+          invitations_sent: response.data.invitations_sent
           }, () => {
         })
       })
@@ -99,13 +104,18 @@ export default class MyProfile extends Component {
                                 value = {this.state.aboutMe}
                                 onChange = {this.update.bind(this)} />
 
+              {/*Invite section*/}
+              <h5 className="ui dividing header">Invitations Sent</h5>
+
+              <h5 className="ui dividing header">Invitations Received</h5>
+              <InviteReceived from="1" group="11" invite="10" access={this.props.access}/>
               {/*My References Section*/}
               <h5 className="ui dividing header">My Courses with Project Groups</h5>
               <CourseList userId = {this.state.id} />
 
               {/*My References Section*/}
-              <h5 className="ui dividing header">My Reference Profiles</h5>
-              <ReferenceList userId = {this.state.id} />
+              {/* <h5 className="ui dividing header">My Reference Profiles</h5>
+              <ReferenceList userId = {this.state.id} /> */}
 
           </div>
       </div>
