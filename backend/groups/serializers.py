@@ -2,6 +2,7 @@ from rest_framework import serializers
 from groups import models
 from django.contrib.auth import get_user_model
 from django.db.models import Avg
+import json
 
 UserModel = get_user_model()
 
@@ -35,6 +36,8 @@ class UserSerializer(serializers.ModelSerializer):
 
 
     average_rating = serializers.SerializerMethodField()
+    invitations_sent = serializers.SerializerMethodField()
+    invitations_received = serializers.SerializerMethodField()
     
     def get_average_rating(self, obj):
 
@@ -42,6 +45,33 @@ class UserSerializer(serializers.ModelSerializer):
         if average_rating is None:
             return 0
         return average_rating
+
+    def get_invitations_sent(self, obj):
+
+        invitations_sent_set = models.Invite.objects.filter(from_user=obj.id)
+        invitations_sent_list = list(invitations_sent_set.values('to_user'))
+        invitations_sent = []
+        for i in invitations_sent_list:
+            print(i["to_user"])
+            invitations_sent.append(i["to_user"])
+
+        if invitations_sent is None:
+            return 0
+        return invitations_sent
+
+    def get_invitations_received(self, obj):
+
+        invitations_received_set = models.Invite.objects.filter(to_user=obj.id)
+        invitations_received_list = list(invitations_received_set.values('from_user', 'status'))
+        invitations_received = []
+        for i in invitations_received_list:
+            print(i["from_user"])
+            if i["status"] == 0:
+                invitations_received.append(i["from_user"])
+
+        if invitations_received is None:
+            return 0
+        return invitations_received
 
     def create(self, validated_data):
         # courses = validated_data['courses']
@@ -63,7 +93,7 @@ class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = UserModel
-        fields = ('id', 'username', 'password', 'first_name', 'last_name', 'display_name', 'groups', 'average_rating', 'about_me', 'courses')
+        fields = ('id', 'username', 'password', 'first_name', 'last_name', 'display_name', 'groups', 'average_rating', 'about_me', 'courses', 'invitations_sent', 'invitations_received',)
 
 class GroupCreateSerializer(serializers.ModelSerializer):
 
