@@ -134,9 +134,12 @@ displayButtons(){
           </tr>
 					<tr>
 							{console.log('Group.js, members:', this.props.members)}
-						<td>{"Group Members: "} {this.props.members.map( ( member,i)=>{
-														return member.user_display_name + " ";
-														})}
+						<td>{"Group Members: "} 
+							<ul>
+							{this.props.members.map( ( member,i)=>{
+								return <li>{member.user_display_name}</li>
+							})}
+							</ul>
 					  </td>
 
 					</tr>

@@ -130,6 +130,7 @@ export default class ProjectGroup extends Component {
 
 			this.setState({ addButtonDisabled: false })
 	}
+
 	//---------------------------------------------------------------------------
 	onCancel( newState ){
 		this.setState({ addButtonDisabled: newState })
