@@ -142,9 +142,29 @@ class RatingSerializer(serializers.ModelSerializer):
         model = models.Rating
 
 class InviteSerializer(serializers.ModelSerializer):
+    
+    # from_user_name = serializers.SerializerMethodField()
+    # to_user_name = serializers.SerializedMethodField()
+    # group_name = serializers.SerializedMethodField()
+
+
+    # def get_from_user_name(self, obj):
+    #     print(obj.from_user.id)
+    #     from_user_name = models.CustomUser.objects.get()
+    #     print(from_user_name)
+    #     return from_user_name
+
+    # def get_to_user_name(self, obj):
+
+    # def get_to_user_name(self, obj):
+
+    from_user_name = serializers.ReadOnlyField(source='from_user.display_name')
+    to_user_name = serializers.ReadOnlyField(source='to_user.display_name')
+    group_name = serializers.ReadOnlyField(source='group.name')
+
 
     class Meta:
-        fields = ('id', 'from_user', 'to_user', 'group', 'status')
+        fields = ('id', 'from_user', 'to_user', 'group', 'status', 'from_user_name', 'to_user_name', 'group_name',)
         model=models.Invite
 
 class InviteResponseSerializer(serializers.Serializer):
