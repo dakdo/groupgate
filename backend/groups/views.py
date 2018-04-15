@@ -1,6 +1,6 @@
 from rest_framework import viewsets, generics, status, mixins
 from groups import models
-from .serializers import UserSerializer, GroupCreateSerializer, RatingSerializer, InviteResponseSerializer, InviteSerializer, CourseSerializer
+from .serializers import MembershipSerializer, UserSerializer, GroupCreateSerializer, RatingSerializer, InviteResponseSerializer, InviteSerializer, CourseSerializer
 from django.contrib.auth import get_user_model
 from rest_framework.decorators import detail_route
 from rest_framework.response import Response
@@ -37,14 +37,12 @@ class GroupViewSet(viewsets.ModelViewSet):
     permission_classes = (IsAuthenticated, permissions.IsOwnerOrReadOnly,)
 
     def get_queryset(self):
-        """
-        Optionally restricts the returned purchases to a given user,
-        by filtering against a `username` query parameter in the URL.
-        """
+ 
         queryset = models.Group.objects.all()
         owner = self.request.query_params.get('owner', None)
         if owner is not None:
             queryset = queryset.filter(owner=owner)
+
         return queryset
 
 class RatingViewSet(viewsets.ModelViewSet):
@@ -119,3 +117,29 @@ class CourseViewSet(viewsets.ModelViewSet):
     queryset = models.Course.objects.all()
     serializer_class = CourseSerializer
     filter_class = CourseFilter
+
+class MembershipViewSet(viewsets.ModelViewSet):
+    queryset = models.Membership.objects.all()
+    serializer_class = MembershipSerializer
+
+    def get_queryset(self):
+        queryset = models.Membership.objects.all()
+
+        # member = self.request.query_params.get('member', None)
+        # print("\n\n\n\n")
+        # print(list(queryset.values('user_id', 'group_id')))
+        # if member is not None:
+        #     group_list = list(queryset.values('user_id', 'group_id'))
+
+        #     for i in group_list:
+        #         if i["user_id"] != member:
+        #             group_list.remove(i)
+
+        #     queryset = group_list
+
+        member = self.request.query_params.get('member', None)
+        if member is not None:
+            queryset = queryset.filter(user_id=member)
+
+        return queryset
+
