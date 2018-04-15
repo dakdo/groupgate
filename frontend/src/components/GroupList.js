@@ -12,7 +12,7 @@ export default class ProjectGroup extends Component {
     this.state = {
 			adding: false,
 			groups: [],
-			addButtonDisabled: false
+			addButtonDisabled: false,
     }
 		this.add = this.add.bind(this)
 		this.eachGroup = this.eachGroup.bind(this)
@@ -41,27 +41,31 @@ export default class ProjectGroup extends Component {
 
 	getGroups(){
 		// GET LIST OF MY GROUPS
-		if(this.props.myGroups){
+			var group_set = []
+			axios.get( `http://localhost:8000/api/memberships/?member=${this.props.access.user_id}`,this.getAxiosHeaders()).then(response => {
+				console.log("MEMBERSHIP DATA", response.data)
 
-		  axios.get( `http://localhost:8000/api/groups/?owner=${this.props.access.user_id}`,
-									this.getAxiosHeaders() )
-		    .then(response => {
-        this.setState( {
-
-		          groups: response.data
-						}, () => { console.log('response.data: ', response.data)
-											{console.log('state.groups', this.state.groups)}
-		        })
-		    })
-		}	// GET LIST OF OTHER GROUPS
-		else{
-			axios.get(`${url}`, this.getAxiosHeaders())											// need to FIX to exclude groups of current user and theoretically DB admin
-			.then(response => {
-				this.setState( {groups: response.data}, () => {
-				console.log("GL-> other groups: ", this.state.groups)
-				})
+				for(var i=0; i<response.data.length; i++){
+					axios.get( `http://localhost:8000/api/groups/${response.data[i].group_id}`,this.getAxiosHeaders())
+					.then(new_response => {
+						console.log("GROUPS DATA", new_response.data)
+						group_set.push(new_response.data)
+						this.setState({groups: group_set})
+					})
+				}
 			})
-		}
+			console.log("GROUP SET", group_set)
+			this.setState({groups: group_set})
+		
+	// GET LIST OF OTHER GROUPS
+		// else{
+		// 	axios.get(`${url}`, this.getAxiosHeaders())											// need to FIX to exclude groups of current user and theoretically DB admin
+		// 	.then(response => {
+		// 		this.setState( {groups: response.data}, () => {
+		// 		console.log("GL-> other groups: ", this.state.groups)
+		// 		})
+		// 	})
+		// }
   }
   //---------------------------------------------------------------------------
 	add(text) {
@@ -152,6 +156,7 @@ export default class ProjectGroup extends Component {
 		}
 	//---------------------------------------------------------------------------
 	eachGroup(group, i) {
+			console.log("WHAT GROUP", group)
 			return (
 				<Group key={group.id}
 					  index={group.id} groupName={group.name} courseNumber={group.course} /*status={group.status} */
@@ -188,9 +193,8 @@ export default class ProjectGroup extends Component {
 			console.log('GL->state.groups before render:', this.state.groups)
 			return(
 				<div className="board">
-				{this.myGroupsButton()}
-				{this.state.groups.map(this.eachGroup) }
-
+					{this.myGroupsButton()}
+					{this.state.groups.map(this.eachGroup) }
 				</div>
 			)
 	}

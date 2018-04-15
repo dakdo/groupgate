@@ -113,8 +113,8 @@ export default class MyProfile extends Component {
               <InviteList access={this.props.access} invite={this.state.invitations_received} isSent="false"/>
 
               {/*My References Section*/}
-              <h5 className="ui dividing header">My Courses with Project Groups</h5>
-              <CourseList userId = {this.state.id} />
+              {/* <h5 className="ui dividing header">My Courses with Project Groups</h5>
+              <CourseList userId = {this.state.id} /> */}
 
               {/*My References Section*/}
               {/* <h5 className="ui dividing header">My Reference Profiles</h5>

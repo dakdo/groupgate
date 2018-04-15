@@ -17,7 +17,7 @@ export default class ProjGroups extends Component {
       <div className="container fluid">
         <br/>
           {/*Your Groups Section*/}
-          <h5 className="ui dividing header">Project Groups You Created</h5>
+          <h5 className="ui dividing header">Your Groups</h5>
           <GroupList access={this.props.access} myGroups={true}/>
 
           {/*Other Users Groups Section*/}

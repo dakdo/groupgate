@@ -161,16 +161,12 @@ displayButtons(){
         <thead>
           <tr>
             <th className="two wide">{"Group Name"}</th>
-            <th className="two wide">{"Course Number"}</th>
-            <th className="two wide">{"Status"}</th>
             <th>{"Description"}</th>
           </tr>
         </thead>
         <tbody>
           <tr>
             <td>{this.props.groupName}</td>
-            <td>{this.props.courseNumber}</td>
-
             <td>{this.props.description}</td>
           </tr>
 					<tr>
