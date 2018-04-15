@@ -17,7 +17,7 @@ Notes on use:
 1. Currently changes may only be viewed on page refresh
 2. User signup is currently broken
 3. Only group owners can update groups
-4. The API is served on localhost:8000
+4. The API is served on localhost:8000 - Info on it can be found in the README in the backend directory
 
 Features available:
 
@@ -28,3 +28,4 @@ Features available:
 4. Create a group
 5. Edit the group info
 6. Remove a group member
+7. All of the information behind the features are done through an API that I created in Django Rest Framework
