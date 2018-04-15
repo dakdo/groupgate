@@ -26,10 +26,10 @@ export default class InviteForm extends Component {
     sendInvite(user, group) {
         console.log("group chosen: " + group)
         var data = {
-        from_user: this.props.access.user_id,
-        to_user: user.id,
-        group: group,
-        status:0
+          from_user: this.props.access.user_id,
+          to_user: user.id,
+          group: group,
+          status:0
         };
 
         console.log(data)
@@ -50,12 +50,18 @@ export default class InviteForm extends Component {
       event.preventDefault();
     }
   
-    createSelectItems(options) {
+    createSelectItems(group_info) {
+        var options = []
+
+        for (var i=0; i < group_info.length; i++){
+          options.push([group_info[i].group_id, group_info[i].group_name])
+        } 
+        
         let items = []    
         for (let i = 0; i < options.length; i++) {           
             console.log(options[i])
   
-             items.push(<option value={options[i]}>{options[i]}</option>);   
+             items.push(<option value={options[i][0]}>{options[i][1]}</option>);   
              //here I will be creating my options dynamically based on
              //what props are currently passed to the parent component
         }

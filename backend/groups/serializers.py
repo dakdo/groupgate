@@ -47,10 +47,8 @@ class UserSerializer(serializers.ModelSerializer):
         return average_rating
 
     def get_invitations_sent(self, obj):
-        print("\n\n\n")
         
         invitations_sent_set = models.Invite.objects.filter(from_user=obj.id)
-        print(invitations_sent_set.values())
         invitations_sent_list = list(invitations_sent_set.values('id', 'status', 'to_user', 'group'))
         for i in invitations_sent_list:
             to_user_name = models.CustomUser.objects.filter(id=i["to_user"]).values('display_name')[0]["display_name"]
@@ -58,8 +56,6 @@ class UserSerializer(serializers.ModelSerializer):
 
             i["to_user_name"] = to_user_name
             i["group_name"] = group_name
-
-        print(invitations_sent_list)
 
         if invitations_sent_list is None:
             return 0
@@ -132,8 +128,8 @@ class GroupCreateSerializer(serializers.ModelSerializer):
         for user in user_data:
             d=dict(user)
             models.Membership.objects.create(group_id=instance, user_id=d['user_id'], user_role=d['user_role'])
-        owner = instance.owner
-        models.Membership.objects.create(group_id=instance, user_id=owner, user_role="owner")
+        # owner = instance.owner
+        # models.Membership.objects.create(group_id=instance, user_id=owner, user_role="owner")
         instance.save()
         return instance
 

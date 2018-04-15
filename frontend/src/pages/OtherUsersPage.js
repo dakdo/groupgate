@@ -105,7 +105,7 @@ export default class OtherUsers extends Component {
                     <td><Link to={`/otherUsers/${user.id}`} >{user.username}</Link></td>
                     {this.ratingRender(user)}
                     <td>{user.num_of_votes}</td>
-                    <td><InviteForm options={options} access={this.props.access} user={user}/></td>
+                    <td><InviteForm options={this.state.myinfo.groups} access={this.props.access} user={user}/></td>
                   </tr>
                 )
               })}

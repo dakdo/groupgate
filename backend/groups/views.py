@@ -25,7 +25,6 @@ class UserViewSet(viewsets.ModelViewSet):
 
         queryset = models.CustomUser.objects.all()
         course = self.request.query_params.get('course', None)
-        # strings = ['keith', 's', 'thompson']
         if course is not None:
             queryset = queryset.filter(courses__in=course)
         return queryset
@@ -43,38 +42,10 @@ class GroupViewSet(viewsets.ModelViewSet):
         by filtering against a `username` query parameter in the URL.
         """
         queryset = models.Group.objects.all()
-        # course = self.request.query_params.get('course', None)
-        # if course is not None:
-        #     queryset = queryset.filter(course=course)
-        
         owner = self.request.query_params.get('owner', None)
         if owner is not None:
             queryset = queryset.filter(owner=owner)
         return queryset
-
-    # def perform_create(self, serializer):
-    #     serializer.save(owner=self.request.user)
-
-    # @detail_route(methods=['get'])
-    # def users_in_class()
-    # @detail_route(methods=['patch'])
-    # def remove_members_from_group(self, request, pk):
-    #     group = self.get_object()
-    #     members_to_remove = request.data['members']
-    #     group.members.remove(members_to_remove)
-    #     return Response(self.serializer_class(group).data)
-
-
-# class CourseList(generics.ListAPIView):
-#     serializer_class = GroupCreateSerializer
-
-#     def get_queryset(self):
-#         """
-#         This view should return a list of all the purchases for
-#         the user as determined by the username portion of the URL.
-#         """
-#         course = self.kwargs['course']
-#         return Purchase.objects.filter(group__course=course)
 
 class RatingViewSet(viewsets.ModelViewSet):
     queryset = models.Rating.objects.all()
