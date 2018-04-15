@@ -1,13 +1,14 @@
-Project documentation: https://drive.google.com/drive/folders/1SkIZ5Da5ywvV8VK8lWG_TI8Egtfqko8y?usp=sharing
+Prerequisites:
 
-Slack channel: https://cmpt470talk.slack.com
+1) Install node.js
 
------> Procedure:
 
-1) git clone
+To run:
 
-2) cd to the project directory
+1) npm install
 
-3) npm install                          // can also use yarn
+2) npm start
 
-4) npm start
+3) IF ON PC: npm run start-pc
+
+4) Go to localhost:3000 (though it should start automatically)
