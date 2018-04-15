@@ -75,10 +75,10 @@ export default class ProjectGroup extends Component {
 				{
 						id: this.nextId(),
 						name: text,
-						course: text,
 	          // status: "Open",
 	          description: text,
-						members: []
+						members: [],
+						owner: this.props.access.user_id
 					}
 				],
 			}))
@@ -92,7 +92,7 @@ export default class ProjectGroup extends Component {
 	}
 	//---------------------------------------------------------------------------
 	// TODO: add status property in /api/groups/
-	update(newGroupName, newCourseNumber, newDescription, i, addMode) {
+	update(newGroupName, newDescription, i, addMode) {
 			console.log('GL->addMode: ', addMode)
 
 			if ( addMode ){
@@ -103,8 +103,6 @@ export default class ProjectGroup extends Component {
 					members: [],
 					owner: this.props.access.user_id
 				}
-
-				console.log(dataPackage)
 				axios.post(`http://localhost:8000/api/groups/`,					//ADD GROUP
 					dataPackage, this.getAxiosHeaders()
 				).then(response => {}).catch(err => console.log(err));
@@ -118,21 +116,20 @@ export default class ProjectGroup extends Component {
 					members: []
 				}
 
-
 				axios.patch(`http://localhost:8000/api/groups/${i}/`,					//UPDATE GROUP
 					dataPackage, this.getAxiosHeaders()
 				).then(response => {}).catch(err => console.log(err));
-
 
 			}
 
 			this.setState(prevState => ({
 				groups: prevState.groups.map(
-					group => (group.id !== i) ? group : {...group, name: newGroupName, course: newCourseNumber, /*status: newStatus, */ description: newDescription}
+					group => (group.id !== i) ? group : {...group, name: newGroupName, description: newDescription}
 				)
 			}))
 
 			this.setState({ addButtonDisabled: false })
+
 	}
 
 	//---------------------------------------------------------------------------
@@ -159,7 +156,7 @@ export default class ProjectGroup extends Component {
 			console.log("WHAT GROUP", group)
 			return (
 				<Group key={group.id}
-					  index={group.id} groupName={group.name} courseNumber={group.course} /*status={group.status} */
+					  index={group.id} groupName={group.name} courseNumber={group.course}
 						description= {group.description} members={group.members} adding={this.state.adding} access={this.props.access}
 						onCancel={this.onCancel} onChange={this.update} onRemove={this.remove} myGroups={this.props.myGroups}>
 			  </Group>

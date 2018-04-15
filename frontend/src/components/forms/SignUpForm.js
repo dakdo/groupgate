@@ -37,8 +37,8 @@ export default class SignUpForm extends React.Component {
         "first_name": "foo",
         "last_name": "bar",
         "display_name": this.state.data.displayName,
-        "groups": []
-
+        "groups": [],
+        "courses": []
       }
       this.props.onSubmit(data)          // <------------------------
         

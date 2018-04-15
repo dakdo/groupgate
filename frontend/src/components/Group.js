@@ -58,7 +58,7 @@ export default class Group extends Component {
 	save(e) {
 		e.preventDefault()
 		console.log('Group, adding flag: ', this.state.adding)
-		this.props.onChange(this._newGroupName.value, this._newCourseNumber.value, this._newDescription.value, this.props.index, this.state.adding)
+		this.props.onChange(this._newGroupName.value, this._newDescription.value, this.props.index, this.state.adding)
 		this.setState({
 			editing: false
 		})
@@ -92,11 +92,9 @@ export default class Group extends Component {
 				new_members.push({"user_id": members[i].user_id, "user_role": members[i].user_role})
 			}
 		}
-		console.log(new_members)
 		var data = {
 			members: new_members
 		}
-
 		axios.patch(`http://localhost:8000/api/groups/${this.props.index}/`,					//UPDATE GROUP
 			data, this.getAxiosHeaders()
 		).then(response => {}).catch(err => console.log(err));
