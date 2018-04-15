@@ -4,6 +4,8 @@ To run Group Gate
 2. vagrant up
 3. Go to your local web browser at localhost:7000
 
+If Vagrant doesn't work: Go to README files in backend and frontend for separate installation instructions
+
 Accounts available (Username/Password)
 
 1. user/pass
