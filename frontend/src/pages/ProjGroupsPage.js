@@ -21,8 +21,8 @@ export default class ProjGroups extends Component {
           <GroupList access={this.props.access} myGroups={true}/>
 
           {/*Other Users Groups Section*/}
-          <h5 className="ui dividing header">Project Groups Other Users Created</h5>
-          <GroupList access={this.props.access} myGroups={false}/>
+          {/* <h5 className="ui dividing header">Project Groups Other Users Created</h5>
+          <GroupList access={this.props.access} myGroups={false}/> */}
       </div>
     );
   }

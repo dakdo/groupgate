@@ -66,15 +66,33 @@ export default class Group extends Component {
 	}
 
 	displayMembers(members) {
+		const divStyle = {
+			marginBottom: '20px',
+			marginTop: '20px'
+		}
+
+		const otherDivStyle = {
+			marginLeft: '25px'
+		}
+
 		const members_now = members.map((member) => 
-			<li>Name: {member.user_display_name} | Role: {member.user_role}</li>
+			<li>
+				<div style={divStyle}>
+					Name: {member.user_display_name} | Role: {member.user_role}
+					<button className="ui red button right small" onClick={() => {this.deleteMember(members, member)}}>X</button>
+				</div>
+			</li>
 		)
 		return members_now
 	}
-	updateMembers(members) {
-		
+	deleteMember(members, member) {
+		var new_members = []
+		for(var i = 0; i<members.length; i++){
+			new_members.push({"user_id": members[i].user_id, "user_role": members[i].user_role})
+		}
+		console.log(new_members)
 		var data = {
-			members: []
+			members: new_members
 		}
 
 		axios.patch(`http://localhost:8000/api/groups/${this.props.index}/`,					//UPDATE GROUP
@@ -109,19 +127,11 @@ export default class Group extends Component {
 							  defaultValue={this.props.groupName}/>
 					</div>
 
-  					{"Course Number:"}
-  					<div className="five wide field">
-  					<input type="text" ref={input => this._newCourseNumber = input}
-  							  defaultValue={this.props.courseNumber}/>
-  					</div>
-
-
-
-      					{"Description:"}
-      					<div className="ten wide field">
-      					<textarea ref={input => this._newDescription = input}
-      							  defaultValue={this.props.description}/>
-      					</div>
+					{"Description:"}
+					<div className="ten wide field">
+					<textarea ref={input => this._newDescription = input}
+								defaultValue={this.props.description}/>
+					</div>
 					<button className="ui primary button right floated" id="save" onClick={this.save}>Save</button>
 					<button className="ui red button right floated" id="cancel" onClick={this.cancel}>Cancel</button>
 				</form>

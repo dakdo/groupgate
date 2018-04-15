@@ -43,9 +43,9 @@ class GroupViewSet(viewsets.ModelViewSet):
         by filtering against a `username` query parameter in the URL.
         """
         queryset = models.Group.objects.all()
-        course = self.request.query_params.get('course', None)
-        if course is not None:
-            queryset = queryset.filter(course=course)
+        # course = self.request.query_params.get('course', None)
+        # if course is not None:
+        #     queryset = queryset.filter(course=course)
         
         owner = self.request.query_params.get('owner', None)
         if owner is not None:

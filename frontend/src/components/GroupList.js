@@ -95,11 +95,12 @@ export default class ProjectGroup extends Component {
 				var userId = Number(this.props.access.user_id)
 				var dataPackage = {
 					name: newGroupName,
-					course: newCourseNumber,
 					description: newDescription,
-					members: []
+					members: [],
+					owner: this.props.access.user_id
 				}
 
+				console.log(dataPackage)
 				axios.post(`http://localhost:8000/api/groups/`,					//ADD GROUP
 					dataPackage, this.getAxiosHeaders()
 				).then(response => {}).catch(err => console.log(err));
@@ -109,7 +110,6 @@ export default class ProjectGroup extends Component {
 
 				var dataPackage = {
 					name: newGroupName,
-					course: newCourseNumber,
 					description: newDescription,
 					members: []
 				}
@@ -155,7 +155,7 @@ export default class ProjectGroup extends Component {
 			return (
 				<Group key={group.id}
 					  index={group.id} groupName={group.name} courseNumber={group.course} /*status={group.status} */
-						description= {group.description} members={group.members} adding={this.state.adding}
+						description= {group.description} members={group.members} adding={this.state.adding} access={this.props.access}
 						onCancel={this.onCancel} onChange={this.update} onRemove={this.remove} myGroups={this.props.myGroups}>
 			  </Group>
 			)

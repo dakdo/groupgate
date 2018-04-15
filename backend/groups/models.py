@@ -49,7 +49,7 @@ class Group(models.Model):
     owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, blank=True)
 
     members = models.ManyToManyField(CustomUser, blank=True, related_name='members')
-    course =models.CharField(max_length=200)
+    # course =models.CharField(max_length=200)
 
     def __str__(self):
         return self.name

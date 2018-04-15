@@ -125,7 +125,7 @@ class GroupCreateSerializer(serializers.ModelSerializer):
         return instance
 
     class Meta:
-        fields = ('id', 'name', 'course', 'description', 'members', 'owner',)
+        fields = ('id', 'name', 'description', 'members', 'owner',)
         model = models.Group
         # lookup_field = 'course'
 

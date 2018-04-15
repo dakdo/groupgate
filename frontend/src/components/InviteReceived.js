@@ -47,13 +47,22 @@ export default class InviteReceived extends Component {
 			).then(response => {}).catch(err => console.log(err));
 
 	}
+	
+
 
 	render() {
+		const divStyle = {
+			marginBottom: '20px',
+			marginTop: '20px'
+		}
 		return (
-			<div>
-					<p>Invite from user {this.props.from} to join group {this.props.group}</p>
-					<button className="ui primary button right floated" onClick={() => {this.sendInviteResponse(true, this.props.invite)}} id="accept">Accept</button>
+			<div style={divStyle}>
+					
+					Invite from user {this.props.from} to join group {this.props.group}
+					
+					<button className="ui green button right floated" onClick={() => {this.sendInviteResponse(true, this.props.invite)}} id="accept">Accept</button>
 					<button className="ui red button right floated" onClick={() => {this.sendInviteResponse(false, this.props.invite)}} id="decline">Decline</button>
+					
 			</div>
 		);
 	}
