@@ -84,6 +84,7 @@ export default class MyProfile extends Component {
   }
 
   render() {
+    console.log("invitesent", this.state.invitations_sent)
     return (
 
         <div>

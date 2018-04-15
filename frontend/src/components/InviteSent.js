@@ -9,7 +9,7 @@ export default class InviteReceived extends Component {
 	render() {
 		return (
 			<div>
-				<p>Invite sent to {this.props.to} to join group {this.props.group} has status {this.props.status}</p>
+				Invite sent to <strong>{this.props.to_name}</strong> to join group <strong>{this.props.group_name}</strong> has status {this.props.status}
 			</div>
 		);
 	}

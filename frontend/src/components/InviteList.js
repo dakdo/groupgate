@@ -12,23 +12,17 @@ export default class InviteList extends Component {
 		}
 	}
 
-	eachInvite(invite, i, access) {
-		return (
-			<InviteReceived  key={invite.id} from={invite.from_user} group={invite.group} invite={invite.id} access={access}>
-		    </InviteReceived>
-		)
-	}
-
 	inviteReceived(invite) {
 		return invite.map((invite) => 
-			<InviteReceived  key={invite.id} from={invite.from_user} group={invite.group} invite={invite.id} access={this.props.access}>
+			<InviteReceived  key={invite.id} from={invite.from_user} from_name={invite.from_user_name} group={invite.group} group_name={invite.group_name} invite={invite.id} access={this.props.access}>
 			</InviteReceived>
 		)
 	}
 
 	inviteSent(invite) {
+		console.log("groupname", invite.group_name)
 		return invite.map((invite) => 
-			<InviteSent  key={invite.id} to={invite.to_user} group={invite.group} status={invite.status} invite={invite.id} access={this.props.access}>
+			<InviteSent  key={invite.id} to={invite.to_user} to_name={invite.to_user_name} group={invite.group} group_name={invite.group_name} status={invite.status} invite={invite.id} access={this.props.access}>
 			</InviteSent>
 		)
 	}

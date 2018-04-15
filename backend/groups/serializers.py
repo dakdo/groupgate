@@ -47,15 +47,21 @@ class UserSerializer(serializers.ModelSerializer):
         return average_rating
 
     def get_invitations_sent(self, obj):
-
+        print("\n\n\n")
+        
         invitations_sent_set = models.Invite.objects.filter(from_user=obj.id)
+        print(invitations_sent_set.values())
         invitations_sent_list = list(invitations_sent_set.values('id', 'status', 'to_user', 'group'))
-        invitations_sent = []
         for i in invitations_sent_list:
-            print(i["to_user"])
-            invitations_sent.append(i["to_user"])
+            to_user_name = models.CustomUser.objects.filter(id=i["to_user"]).values('display_name')[0]["display_name"]
+            group_name = models.Group.objects.filter(id=i["group"]).values('name')[0]["name"]
 
-        if invitations_sent is None:
+            i["to_user_name"] = to_user_name
+            i["group_name"] = group_name
+
+        print(invitations_sent_list)
+
+        if invitations_sent_list is None:
             return 0
         return invitations_sent_list
 
@@ -63,13 +69,20 @@ class UserSerializer(serializers.ModelSerializer):
 
         invitations_received_set = models.Invite.objects.filter(to_user=obj.id)
         invitations_received_list = list(invitations_received_set.values('id', 'from_user', 'group', 'status'))
-        invitations_received = []
         for i in invitations_received_list:
+            
             if i["status"] != 0:
                 invitations_received_list.remove(i)
+            else:
+                from_user_name = models.CustomUser.objects.filter(id=i["from_user"]).values('display_name')[0]["display_name"]
+                group_name = models.Group.objects.filter(id=i["group"]).values('name')[0]["name"]
 
-        if invitations_received is None:
+                i["from_user_name"] = from_user_name
+                i["group_name"] = group_name
+
+        if invitations_received_list is None:
             return 0
+
         return invitations_received_list
 
     def create(self, validated_data):
