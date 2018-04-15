@@ -85,10 +85,12 @@ export default class Group extends Component {
 		)
 		return members_now
 	}
-	deleteMember(members, member) {
+	deleteMember(members, deletemember) {
 		var new_members = []
 		for(var i = 0; i<members.length; i++){
-			new_members.push({"user_id": members[i].user_id, "user_role": members[i].user_role})
+			if(members[i].user_id != deletemember.user_id){
+				new_members.push({"user_id": members[i].user_id, "user_role": members[i].user_role})
+			}
 		}
 		console.log(new_members)
 		var data = {
