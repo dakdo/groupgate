@@ -7,7 +7,7 @@ import 'react-dropdown/style.css'
 export default class InviteForm extends Component {
     constructor(props) {
       super(props);
-      this.state = {value: '3'};
+      this.state = '1';
   
       this.handleChange = this.handleChange.bind(this);
       this.handleSubmit = this.handleSubmit.bind(this);
@@ -24,7 +24,6 @@ export default class InviteForm extends Component {
 
     //TODO: should have a prop already containing user groups. Need a way to select a group
     sendInvite(user, group) {
-        console.log("group chosen: " + group)
         var data = {
           from_user: this.props.access.user_id,
           to_user: user.id,
@@ -32,7 +31,6 @@ export default class InviteForm extends Component {
           status:0
         };
 
-        console.log(data)
         axios.post(
             `http://localhost:8000/api/invites/`,
             data, this.getAxiosHeaders()
@@ -45,7 +43,6 @@ export default class InviteForm extends Component {
     }
   
     handleSubmit(event) {
-      alert('Your favorite flavor is: ' + this.state.value);
       this.sendInvite(this.props.user,this.state.value)
       event.preventDefault();
     }
@@ -74,7 +71,7 @@ export default class InviteForm extends Component {
             <select value={this.state.value} onChange={this.handleChange}>
                 {this.createSelectItems(this.props.options)}
             </select>
-          <input type="submit" value="Submit" />
+          <input type="submit" value="Invite" />
         </form>
       );
     }

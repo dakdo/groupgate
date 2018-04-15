@@ -67,22 +67,6 @@ export default class OtherUsers extends Component {
 
   
   render() {
-    var options = []
-    var defaultOption = 0
-    const group_info = this.state.myinfo.groups
-    if(typeof group_info!=="undefined") {
-      if(group_info.length > 0) {
-        for (var i=0; i < group_info.length; i++){
-          options.push(group_info[i].group_id)
-        }
-        defaultOption = options[0]
-        console.log(options)
-      }
-    }
-    // console.log("My info: " + JSON.stringify(group_info))
-
-
-    // console.log("My info: " + JSON.stringify(options))
     return (
       
       <div className=" container fluid">
@@ -102,9 +86,9 @@ export default class OtherUsers extends Component {
 
                 return(
                   <tr key={i}>
-                    <td><Link to={`/otherUsers/${user.id}`} >{user.username}</Link></td>
-                    {this.ratingRender(user)}
-                    <td>{user.num_of_votes}</td>
+                    <td><Link to={`/otherUsers/${user.id}`} >{user.display_name}</Link></td>
+                    {/* {this.ratingRender(user)} */}
+                    {/* <td>{user.num_of_votes}</td> */}
                     <td><InviteForm options={this.state.myinfo.groups} access={this.props.access} user={user}/></td>
                   </tr>
                 )
